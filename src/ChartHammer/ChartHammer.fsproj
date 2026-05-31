@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Title>ChartHammer</Title>
+    <Description>ChartHammer does the thing!</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" />
+    <PackageReference Include="Argu" />
+    <PackageReference Include="Packaging.Targets" PrivateAssets="All" />
+    <PackageReference Include="XParsec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <None Include="App.config" />
+    <Compile Include="Helpers.fs" />
+    <Compile Include="DiceParser.fs" />
+    <Compile Include="Generator.fs" />
+    <Compile Include="HitRolls.fs" />
+    <Compile Include="WoundRolls.fs" />
+    <Compile Include="SaveRolls.fs" />
+    <Compile Include="Simulator.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChartHammer.SharedTypes\ChartHammer.SharedTypes.fsproj" />
+  </ItemGroup>
+</Project>
