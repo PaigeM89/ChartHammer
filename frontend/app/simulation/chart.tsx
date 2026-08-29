@@ -1,7 +1,7 @@
 import type {
-    HitsResponse,
-    ChartResponse
-} from './chartTypes'
+    HitsResult,
+    SimResult
+} from './simulationTypes'
 import {
   BarChart,
   Bar,
@@ -16,10 +16,10 @@ import {
 } from 'recharts';
 
 interface ChartProps {
-    simResults : ChartResponse
+    simResults : SimResult
 }
 
-function totalHits(hitResults : HitsResponse) {
+function totalHits(hitResults : HitsResult) {
     return hitResults.NaturalHits + hitResults.SustainedHits + hitResults.AutoWounds;
 }
 
@@ -28,7 +28,7 @@ interface ChartData {
     value: number
 }
 
-function transformSimResults(simResults : ChartResponse) {
+function transformSimResults(simResults : SimResult) {
     const data : ReadonlyArray<ChartData> = 
         [
             { name: "Attacks", value: simResults.AttackCount },
@@ -59,7 +59,6 @@ export function SimResultsBarChart( { simResults } : ChartProps)
                 <XAxis height="auto" dataKey="name" />
                 <YAxis width="auto" dataKey="value" />
                 <Tooltip />
-                <Legend />
                 <Bar dataKey="value" radius={[10, 10, 0, 0]} fill="#8884d8" />
             </BarChart>
         </div>

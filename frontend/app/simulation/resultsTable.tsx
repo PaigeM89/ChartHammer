@@ -1,8 +1,7 @@
-
 import type {
-    HitsResponse,
-    ChartResponse
-} from './chartTypes'
+    HitsResult,
+    SimResult
+} from './simulationTypes'
 
 interface TableRowProps {
     text: string
@@ -28,7 +27,7 @@ function NumberCell( { value } : TableNumberCell) {
     )
 }
 
-function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: HitsResponse) {
+function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: HitsResult) {
     return (
         <div className="grid place-content-center">
             <table className="table-fixed">
@@ -56,7 +55,7 @@ function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: H
 }
 
 interface DataTableProps {
-    simResults : ChartResponse
+    simResults : SimResult
 }
 
 export function DataTable( { simResults } : DataTableProps ) {

@@ -1,20 +1,21 @@
 import {
-    useQuery,
-    useQueryClient,
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
-import { testData } from './chartTypes'
 import type {
-    HitsResponse,
-    ChartResponse
-} from './chartTypes'
+    SimRequest,
+    SimResult
+} from './simulationTypes'
 import { DataTable } from './resultsTable'
 import { SimResultsBarChart } from './chart';
+import { SimInput } from './simInput';
+import { simRequestAtom } from "./simulationAtoms";
+import { useAtomValue } from 'jotai';
+import { atomWithQuery } from 'jotai-tanstack-query';
 
 const queryClient = new QueryClient();
 
-async function getSimulationData() {
+async function getSimulationData(simRequest : SimRequest) {
     const response = await fetch(
         'http://localhost:5000/simulate',
         {
@@ -22,26 +23,27 @@ async function getSimulationData() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(testData)
+            body: JSON.stringify(simRequest)
         }
     )
     const data = await response.json()
 
-    return data as ChartResponse;
+    return data as SimResult;
 }
 
+const simRequestQueryAtom = atomWithQuery((get) => ({
+        queryKey: [ "simulation" ],
+        queryFn: () => getSimulationData(get(simRequestAtom))
+    }))
+
 function SimulationResults() {
-    const { isPending, error, data, isFetching } = useQuery( 
-        {   queryKey: ['simulation'], 
-            queryFn: getSimulationData 
-        });
+    const simRequest = useAtomValue(simRequestAtom)
+    console.log(simRequest)
 
+    const { data, isPending, isError } = useAtomValue(simRequestQueryAtom)
     if (isPending) return 'Loading...'
-
-    if (error) return 'An error has occurred: ' + error.message
-
-    if(!data) return 'Error fetching data'
-
+    if (isError) return 'An error has occurred'
+    if (!data) return 'Failed to parse response'
     return (
         <div>
             <SimResultsBarChart simResults={data} />
@@ -53,6 +55,7 @@ function SimulationResults() {
 export function SimulationRoot() {
     return (
         <QueryClientProvider client={queryClient}>
+            <SimInput />
             <SimulationResults />
         </QueryClientProvider>
     );

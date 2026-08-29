@@ -1,4 +1,4 @@
-export interface ChartRequest {
+export interface SimRequest {
     Attacks: string;
     ToHit: number;
     HitModifiers: [string, number][];
@@ -10,38 +10,29 @@ export interface ChartRequest {
     EnemyModelHitPoints: number;
 }
 
-export const testData : ChartRequest =
+export const defaultSimRequest : SimRequest =
     {
-        Attacks: "20",
-        ToHit: 3,
-        HitModifiers: [
-            [
-                "SustainedHits",
-                1
-            ],
-            [
-                "RerollOnes",
-                0
-            ]
-        ],
-        ToWound: 3,
+        Attacks: "10",
+        ToHit: 4,
+        HitModifiers: [],
+        ToWound: 4,
         WoundModifiers: [],
-        ToSave: 5,
-        DamagePerHit: 3,
+        ToSave: 4,
+        DamagePerHit: 1,
         DamageModifiers: [],
-        EnemyModelHitPoints: 12
+        EnemyModelHitPoints: 1
     };
 
-export interface HitsResponse {
+export interface HitsResult {
     NaturalHits: number;
     SustainedHits: number;
     AutoWounds: number;
     HitNaturalOnes: number;
 }
 
-export interface ChartResponse {
+export interface SimResult {
     AttackCount: number;
-    Hits: HitsResponse;
+    Hits: HitsResult;
     DevastatingWounds: number;
     RegularWounds: number;
     UnsavedWoundCount: number,
