@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
-import { ChartRoot  } from "~/chart/chart";
+import { SimulationRoot } from '../chart/simulation';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div>
       <Welcome />
-      <ChartRoot />
+      <SimulationRoot />
     </div>
   );
 }

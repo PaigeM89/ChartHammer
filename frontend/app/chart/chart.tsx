@@ -1,146 +1,67 @@
-import {
-    useQuery,
-    QueryClient,
-    useQueryClient,
-    QueryClientProvider
-} from '@tanstack/react-query'
-import { testData } from './chartTypes'
 import type {
     HitsResponse,
     ChartResponse
 } from './chartTypes'
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  createHorizontalChart,
+  type TooltipContentProps,
+  type TooltipIndex
+} from 'recharts';
 
-const queryClient = new QueryClient();
-
-async function getSimulationData() {
-    const response = await fetch(
-        'http://localhost:5000/simulate',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(testData)
-        }
-    )
-    const data = await response.json()
-
-    return data as ChartResponse;
+interface ChartProps {
+    simResults : ChartResponse
 }
 
-interface TableRowProps {
-    text: string
+function totalHits(hitResults : HitsResponse) {
+    return hitResults.NaturalHits + hitResults.SustainedHits + hitResults.AutoWounds;
 }
 
-function RowHeader( { text } : TableRowProps) {
+interface ChartData {
+    name: string
+    value: number
+}
+
+function transformSimResults(simResults : ChartResponse) {
+    const data : ReadonlyArray<ChartData> = 
+        [
+            { name: "Attacks", value: simResults.AttackCount },
+            { name: "Hits", value: totalHits(simResults.Hits) },
+            { name: "Wounds", value: simResults.RegularWounds + simResults.MortalWounds },
+            { name: "Unsaved Wounds", value: simResults.UnsavedWoundCount }
+        ];
+    return data;
+}
+
+export function SimResultsBarChart( { simResults } : ChartProps) 
+{
+    const data = transformSimResults(simResults);
     return (
-        <th scope="row" className="w-24 h-16 border border-grey-300">
-            {text}
-        </th>
-    )
-}
-
-interface TableNumberCell {
-    value : number
-}
-
-function NumberCell( { value } : TableNumberCell) {
-    return (
-        <td className="w-20 h-16 border border-grey-300 text-center align-middle">
-            {value}
-        </td>
-    )
-}
-
-function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: HitsResponse) {
-    return (
-        <div className="grid place-content-center">
-            <table className="table-fixed">
-                <tbody>
-                    <tr>
-                        <RowHeader text="Natural Hits" />
-                        <NumberCell value={NaturalHits} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Sustained Hits" />
-                        <NumberCell value={SustainedHits} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Auto Wounds" />
-                        <NumberCell value={AutoWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Natural Ones" />
-                        <NumberCell value={HitNaturalOnes} />
-                    </tr>
-                </tbody>
-            </table>
+        <div className="flex justify-center items-center w-full">
+            <BarChart
+                style={{ width: '100%', height: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618}}
+                responsive
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 0,
+                    left: 0,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid />
+                <XAxis height="auto" dataKey="name" />
+                <YAxis width="auto" dataKey="value" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" radius={[10, 10, 0, 0]} fill="#8884d8" />
+            </BarChart>
         </div>
-    )
-}
-
-function DataTable() {
-    const queryClient = useQueryClient()
-
-    const { isPending, error, data, isFetching } = useQuery( {  queryKey: ['simulation'], queryFn: getSimulationData })
-
-    if (isPending) return 'Loading...'
-
-    if (error) return 'An error has occurred: ' + error.message
-
-    if(!data) return 'Error fetching data'
-
-    return (
-        <div className="grid place-content-center">
-            <table className="table-fixed">
-                <tbody>
-                    <tr>
-                        <RowHeader text="Attacks" />
-                        <NumberCell value={data.AttackCount} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Hits" />
-                        <HitsCell 
-                            NaturalHits={data.Hits.NaturalHits}
-                            SustainedHits={data.Hits.SustainedHits}
-                            AutoWounds={data.Hits.AutoWounds}
-                            HitNaturalOnes={data.Hits.HitNaturalOnes}
-                        />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Devastating Wounds" />
-                        <NumberCell value={data.DevastatingWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Regular Wounds" />
-                        <NumberCell value={data.RegularWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Unsaved Wounds" />
-                        <NumberCell value={data.UnsavedWoundCount} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Mortal Wounds" />
-                        <NumberCell value={data.MortalWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Damage Total" />
-                        <NumberCell value={data.DamageTotal} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Models Destroyed" />
-                        <NumberCell value={data.ModelsDestroyed} />
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    )
-}
-
-export function ChartRoot() {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <DataTable />
-        </QueryClientProvider>
     );
-} 
+}
