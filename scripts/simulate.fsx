@@ -2,7 +2,6 @@
 #r "nuget: FsHttp"
 #r "nuget: FSharp.SystemTextJson"
 
-open System.Net.Http
 open System.Text.Json
 open System.Text.Json.Serialization
 open FsHttp
@@ -10,9 +9,9 @@ open ChartHammer.SharedTypes.DTOs
 
 let simulationInput =
     {
-        SimulationInputDto.Attacks = "2d6 + 6"
+        SimulationInputDto.Attacks = "20"
         ToHit = 3
-        HitModifiers = [ ("SustainedHits", 1) ]
+        HitModifiers = [ ("SustainedHits", 1); ("RerollOnes", 0) ]
         ToWound = 3
         WoundModifiers = []
         ToSave = 5
@@ -26,6 +25,8 @@ options.Converters.Add(JsonFSharpConverter())
 
 let inputAsJson = JsonSerializer.Serialize(simulationInput, options)
 
+
+printfn "Input as json:\n%s" inputAsJson
 
 let sendPost() =
     http {

@@ -27,6 +27,7 @@
     <Compile Include="HitRolls.fs" />
     <Compile Include="WoundRolls.fs" />
     <Compile Include="SaveRolls.fs" />
+    <Compile Include="Damage.fs" />
     <Compile Include="Simulator.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>

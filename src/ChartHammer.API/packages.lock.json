@@ -11,6 +11,15 @@
           "FSharp.Core": "4.7.0"
         }
       },
+      "FsToolkit.ErrorHandling": {
+        "type": "Direct",
+        "requested": "[5.2.0, )",
+        "resolved": "5.2.0",
+        "contentHash": "Y7NfN1gDJ5eOANmi8/aEjGHTWrJOYyqwmgtdA3BIZggd0Ph0IIsbewtgNaLkDYFGgkKw6mGlk0iw4RZ2ZRKZhA==",
+        "dependencies": {
+          "FSharp.Core": "9.0.300"
+        }
+      },
       "Oxpecker": {
         "type": "Direct",
         "requested": "[2.0.1, )",

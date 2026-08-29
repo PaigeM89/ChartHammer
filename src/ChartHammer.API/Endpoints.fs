@@ -1,5 +1,6 @@
 namespace ChartHammer.API
 
+open ChartHammer.SharedTypes.Types
 open ChartHammer.SharedTypes.DTOs
 open Microsoft.AspNetCore.Http
 open Oxpecker
@@ -12,10 +13,16 @@ module Handlers =
     let runSimulation (ctx : HttpContext) =
         task {
             let! simInput = ctx.BindJson<SimulationInputDto>()
-            
             printfn "%A" simInput
 
-            return ctx.WriteText "Test response"
+            let input = Transforms.transformDtoToDomain simInput
+
+            match input with
+            | Error msg ->
+                return ctx.WriteText msg
+            | Ok input ->
+                let simResult = ChartHammer.Simulation.simulateNTimes input SIMULATION_COUNT
+                return ctx.WriteJson simResult
         } :> Task
 
 module Endpoints =
