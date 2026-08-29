@@ -20,7 +20,7 @@ interface ChartProps {
 }
 
 function totalHits(hitResults : HitsResult) {
-    return hitResults.NaturalHits + hitResults.SustainedHits + hitResults.AutoWounds;
+    return hitResults.NaturalHits + hitResults.SustainedHits;
 }
 
 interface ChartData {

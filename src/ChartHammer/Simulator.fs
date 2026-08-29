@@ -8,9 +8,9 @@ module Simulation =
         let attacks = 
             match input.Attacks with
             | StaticValue x -> x
-            | DiceRoll (sides, count, modifier) ->
-                let rollValues = Generator.rollCustomDice count sides |> Seq.sum
-                rollValues + modifier
+            | DiceRoll (count,sides, modifier) ->
+                let rollTotal = Generator.rollCustomDice count sides |> Seq.sum
+                rollTotal + modifier
         { simResult with AttackCount = attacks }
 
     let simulateFullAttack input =
