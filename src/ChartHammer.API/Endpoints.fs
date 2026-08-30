@@ -1,7 +1,6 @@
 namespace ChartHammer.API
 
-open ChartHammer.SharedTypes.Types
-open ChartHammer.SharedTypes.DTOs
+open ChartHammer.API.DTOs
 open Microsoft.AspNetCore.Http
 open Oxpecker
 

@@ -2,7 +2,7 @@ namespace ChartHammer
 
 module Simulation = 
     open ChartHammer
-    open ChartHammer.SharedTypes.Types
+    open ChartHammer.Types
     
     let private simulateAttackCount input simResult =
         let attacks = 

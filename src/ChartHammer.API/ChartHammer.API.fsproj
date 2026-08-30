@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DTOs.fs" />
     <Compile Include="Transforms.fs" />
     <Compile Include="Endpoints.fs" />
     <Compile Include="Program.fs" />
@@ -15,6 +16,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChartHammer\ChartHammer.fsproj" />
-    <ProjectReference Include="..\ChartHammer.SharedTypes\ChartHammer.SharedTypes.fsproj" />
   </ItemGroup>
 </Project>

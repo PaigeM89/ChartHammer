@@ -6,18 +6,17 @@ module Types =
     | StaticValue of int
     | DiceRoll of diceSides : int * diceCount : int * staticModifier : int
 
-    // type AttackModifier =
-    // | Blast
-    // | RapidFire of int
-
     type HitModifier =
     // auto-hit, skip the whole step
     | Torrent
     // -1 to hit
+    // do i need this?
     | TargetInStealth
     | LethalHits
+    // do i need this?
     | Heavy
     | SustainedHits of int
+    // do i need this?
     | Hazardous
     | RerollOnes
     | RerollFailures
@@ -91,5 +90,4 @@ module Types =
     module SimResult =
         let getRollableHitCount simResult = simResult.Hits.RollableHits
         
-        let getTotalSaveRolls simResult = simResult.Hits.TotalHits
-
+        let getTotalSaveRolls simResult = simResult.RegularWounds

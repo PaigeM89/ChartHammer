@@ -1,7 +1,7 @@
 namespace ChartHammer
 
 module WoundRolls =
-    open ChartHammer.SharedTypes.Types
+    open ChartHammer.Types
     open Generator
 
     let private runRerolls input rolls =

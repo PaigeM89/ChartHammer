@@ -1,7 +1,5 @@
 namespace ChartHammer
 
-open ChartHammer.SharedTypes
-
 module DiceParser =
     open XParsec
     open XParsec.CharParsers

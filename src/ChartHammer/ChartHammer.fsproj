@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
+    <Compile Include="Types.fs" />
     <Compile Include="Helpers.fs" />
     <Compile Include="DiceParser.fs" />
     <Compile Include="Generator.fs" />
@@ -30,8 +31,5 @@
     <Compile Include="Damage.fs" />
     <Compile Include="Simulator.fs" />
     <Compile Include="Main.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChartHammer.SharedTypes\ChartHammer.SharedTypes.fsproj" />
   </ItemGroup>
 </Project>

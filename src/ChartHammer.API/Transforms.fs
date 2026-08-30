@@ -1,8 +1,8 @@
 namespace ChartHammer.API
 
 open FsToolkit.ErrorHandling
-open ChartHammer.SharedTypes.Types
-open ChartHammer.SharedTypes.DTOs
+open ChartHammer.Types
+open ChartHammer.API.DTOs
 
 module Transforms =
 

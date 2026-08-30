@@ -1,7 +1,7 @@
 namespace ChartHammer
 
 module SaveRolls =
-    open ChartHammer.SharedTypes.Types
+    open ChartHammer.Types
     open Generator
 
     let simulateSaveRolls input simResult =

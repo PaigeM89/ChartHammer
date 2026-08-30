@@ -1,6 +1,6 @@
 namespace ChartHammer
 
-open ChartHammer.SharedTypes.Types
+open ChartHammer.Types
 
 module Damage =
     
