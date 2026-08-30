@@ -1,7 +1,7 @@
 import { atom, type SetStateAction } from 'jotai'
 import { defaultSimRequest } from './simulationTypes'
 
-
+// Copied from Jotai's website
 function atomWithDebounce<T>(
   initialValue: T,
   delayMilliseconds = 500,
@@ -70,15 +70,20 @@ function atomWithDebounce<T>(
 export const attacksAtom = atomWithDebounce("10")
 export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
-  //atom(4)
+export const toWoundAtom = atomWithDebounce(4)
+
 
 export const simRequestAtom = atom((get) => {
     const toHit = get(toHitAtom.debouncedValueAtom)
-    let request = { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit }
+    let request = { 
+      ...defaultSimRequest,
+      Attacks: get(attacksAtom.debouncedValueAtom), 
+      ToHit: toHit,
+      ToWound: get(toWoundAtom.debouncedValueAtom),
+    }
 
     if(get(torrentAtom.debouncedValueAtom))
         request = { ...request, HitModifiers: [ ["Torrent", 0] ]}
     
     return request;
-    //return { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit };
 })
