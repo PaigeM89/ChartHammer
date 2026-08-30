@@ -6,7 +6,7 @@ import type {
     SimRequest,
     SimResult
 } from './simulationTypes'
-import { DataTable, DataTableHorizontal } from './resultsTable'
+import { DataTableHorizontal } from './resultsTable'
 import { SimResultsBarChart } from './chart';
 import { SimInput } from './simInput';
 import { isAnyDebouncing, simRequestAtom } from "./simulationAtoms";

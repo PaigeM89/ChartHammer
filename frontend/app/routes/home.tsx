@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
-import { SimulationRoot } from '../simulation/simulation';
+import { SimulationRoot } from '../simpleSimulation/simulation';
 import { Header } from "~/header/header";
 import { Footer } from "~/footer/footer";
 
