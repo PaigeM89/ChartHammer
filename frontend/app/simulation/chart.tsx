@@ -58,7 +58,6 @@ export function SimResultsBarChart( { simResults } : ChartProps)
                 <CartesianGrid />
                 <XAxis height="auto" dataKey="name" />
                 <YAxis width="auto" dataKey="value" />
-                <Tooltip />
                 <Bar dataKey="value" radius={[10, 10, 0, 0]} fill="#8884d8" />
             </BarChart>
         </div>

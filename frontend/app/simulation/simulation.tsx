@@ -37,9 +37,6 @@ const simRequestQueryAtom = atomWithQuery((get) => ({
     }))
 
 function SimulationResults() {
-    const simRequest = useAtomValue(simRequestAtom)
-    console.log(simRequest)
-
     const { data, isPending, isError } = useAtomValue(simRequestQueryAtom)
     if (isPending) return 'Loading...'
     if (isError) return 'An error has occurred'

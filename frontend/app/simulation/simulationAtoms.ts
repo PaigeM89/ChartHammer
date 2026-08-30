@@ -68,10 +68,11 @@ function atomWithDebounce<T>(
 }
 
 export const attacksAtom = atomWithDebounce("10")
-export const toHitAtom = atom(4)
+export const toHitAtom = atomWithDebounce(4)
+  //atom(4)
 
 export const simRequestAtom = atom((get) => {
-    const toHit = get(toHitAtom)
+    const toHit = get(toHitAtom.debouncedValueAtom)
 
     return { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit };
 })
