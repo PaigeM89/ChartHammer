@@ -23,7 +23,7 @@ interface TableNumberCell {
 function NumberCell( { value } : TableNumberCell) {
     return (
         <td className="w-20 h-16 border border-grey-300 text-center align-middle">
-            {value}
+            {value.toFixed(4)}
         </td>
     )
 }

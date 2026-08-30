@@ -1,5 +1,5 @@
 import { attacksAtom, criticalWoundAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom } from "./simulationAtoms";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
 import { Checkbox } from "../components/Checkbox";
