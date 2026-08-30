@@ -77,6 +77,8 @@ export const hitsRerollFailures = atomWithDebounce(false)
 export const hazardous = atomWithDebounce(false)
 export const criticalHitAtom = atomWithDebounce(6)
 export const toWoundAtom = atomWithDebounce(4)
+export const woundsRerollOnes = atomWithDebounce(false)
+export const woundsRerollFailures = atomWithDebounce(false)
 export const devastatingWoundsEnabled = atomWithDebounce(false)
 export const precisionHitsEnabled = atomWithDebounce(false)
 export const criticalWoundAtom = atomWithDebounce(6)
@@ -96,6 +98,17 @@ export const hitsModifierAtom = atom((get) => {
   return hitModifiers;
 })
 
+export const woundModifiersAtom = atom((get) => {
+  return (
+    {
+      DevastatingWounds: get(devastatingWoundsEnabled.debouncedValueAtom),
+      RerollOnes: get(woundsRerollOnes.debouncedValueAtom),
+      RerollFailures: get(woundsRerollFailures.debouncedValueAtom),
+      CriticalWound: get(criticalWoundAtom.debouncedValueAtom)
+    }
+  )
+})
+
 export const simRequestAtom = atom((get) => {
     let criticalWound = get(criticalWoundAtom.debouncedValueAtom);
     if (!get(devastatingWoundsEnabled.debouncedValueAtom))
@@ -108,11 +121,8 @@ export const simRequestAtom = atom((get) => {
       ToHit: get(toHitAtom.debouncedValueAtom),
       HitModifiers: get(hitsModifierAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
-      CriticalWound: criticalWound,
+      WoundModifiers: get(woundModifiersAtom),
     }
-
-    if(get(devastatingWoundsEnabled.debouncedValueAtom))
-        request = { ...request, WoundModifiers: { DevastatingWounds: get(devastatingWoundsEnabled.debouncedValueAtom) } }
 
     return request;
 })

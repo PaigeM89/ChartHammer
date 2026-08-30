@@ -18,6 +18,9 @@ module DTOs =
     type WoundModifiers = 
         {
             DevastatingWounds : bool
+            RerollOnes : bool
+            RerollFailures : bool
+            CriticalWound : int
         }
 
     [<CLIMutable>]
@@ -25,11 +28,8 @@ module DTOs =
         {
             Attacks: string
             ToHit: int
-            //HitModifiers : (string * int) list
             HitModifiers : HitModifiersDto
-            ToWound: int
-            CriticalWound : int
-            //WoundModifiers : string list
+            ToWound: int            
             WoundModifiers : WoundModifiers
             ToSave: int
             DamagePerHit: int

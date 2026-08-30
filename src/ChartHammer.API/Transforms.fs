@@ -31,12 +31,13 @@ module Transforms =
                             CriticalHit = dto.HitModifiers.CriticalHit
                         }
                     ToWound = dto.ToWound
-                    CriticalWound = dto.CriticalWound
                     WoundModifiers = 
-                        [
-                            if dto.WoundModifiers.DevastatingWounds
-                            then yield WoundModifier.Devastating
-                        ]
+                        {
+                            WoundModifiers.Devastating = dto.WoundModifiers.DevastatingWounds
+                            RerollOnes = dto.WoundModifiers.RerollOnes
+                            RerollFailures = dto.WoundModifiers.RerollFailures
+                            CriticalWound = dto.WoundModifiers.CriticalWound
+                        }
                     ToSave = dto.ToSave
                     DamagePerHit = dto.DamagePerHit
                     DamageModifiers = []

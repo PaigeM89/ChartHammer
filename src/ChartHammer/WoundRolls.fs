@@ -5,14 +5,14 @@ module WoundRolls =
     open Generator
 
     let private runRerolls input rolls =
-        if input.WoundModifiers |> List.contains WoundModifier.RerollFailures
+        if input.WoundModifiers.RerollFailures
         then
             let hits, misses = List.partition (fun r -> r >= input.ToWound) rolls
             let rerolls = generate (List.length misses) |> List.ofSeq
             hits @ rerolls
-        else if input.WoundModifiers |> List.contains WoundModifier.RerollOnes
+        else if input.WoundModifiers.RerollOnes
         then 
-            let nonOnes, ones = List.partition (fun r -> r = 1) rolls
+            let nonOnes, ones = List.partition (fun r -> r > 1) rolls
             let rerolls = generate (List.length ones) |> List.ofSeq
             nonOnes @ rerolls
         else rolls
@@ -25,8 +25,8 @@ module WoundRolls =
                 generate hitsToRoll |> Seq.toList
                 |> runRerolls input
             let successfulWounds, _ = rolls |> List.partition (fun r -> r >= input.ToWound)
-            let criticalWounds, regularWounds = successfulWounds |> List.partition (fun r -> r >= input.CriticalWound)
-            if input.WoundModifiers |> List.contains Devastating
+            let criticalWounds, regularWounds = successfulWounds |> List.partition (fun r -> r >= input.WoundModifiers.CriticalWound)
+            if input.WoundModifiers.Devastating
             then
                 let criticalWounds = criticalWounds |> List.length
                 let successfulWounds = regularWounds |> List.length

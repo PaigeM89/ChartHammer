@@ -30,6 +30,13 @@ module Types =
     | RerollOnes
     | RerollFailures
 
+    type WoundModifiers = {
+        Devastating : bool
+        RerollOnes : bool
+        RerollFailures : bool
+        CriticalWound : int
+    }
+
     type DamageModifier =
     | Melta of int
 
@@ -38,8 +45,7 @@ module Types =
         ToHit: int
         HitModifiers : HitModifiers
         ToWound: int
-        CriticalWound: int
-        WoundModifiers : WoundModifier list
+        WoundModifiers : WoundModifiers // WoundModifier list
         ToSave: int
         DamagePerHit: int
         DamageModifiers : DamageModifier list

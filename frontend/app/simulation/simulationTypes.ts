@@ -10,14 +10,24 @@ export interface HitModifiers {
 
 export interface WoundModifiers {
     DevastatingWounds : boolean
+    RerollOnes : boolean
+    RerollFailures : boolean
+    CriticalWound : number
 }
+
+export const defaultWoundModifiers =
+    {
+        DevastatingWounds : false,
+        RerollOnes : false,
+        RerollFailures : false,
+        CriticalWound : 6
+    }
 
 export interface SimRequest {
     Attacks: string;
     ToHit: number;
     HitModifiers: HitModifiers;
     ToWound: number;
-    CriticalWound: number;
     WoundModifiers: WoundModifiers;
     ToSave: number;
     DamagePerHit: number;
@@ -42,8 +52,7 @@ export const defaultSimRequest : SimRequest =
         ToHit: 4,
         HitModifiers: defaultHitModifiers,
         ToWound: 4,
-        CriticalWound: 6,
-        WoundModifiers: { DevastatingWounds: false },
+        WoundModifiers: defaultWoundModifiers,
         ToSave: 4,
         DamagePerHit: 1,
         DamageModifiers: [],
@@ -66,7 +75,7 @@ export interface SimResult {
     AttackCount: number;
     Hits: HitsResult;
     Wounds: WoundsResult;
-    UnsavedWounds: number,
+    UnsavedWounds: number;
     DamageTotal: number;
     MortalWounds: number;
     ModelsDestroyed: number;
