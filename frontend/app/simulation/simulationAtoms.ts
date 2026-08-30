@@ -68,11 +68,17 @@ function atomWithDebounce<T>(
 }
 
 export const attacksAtom = atomWithDebounce("10")
+export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
   //atom(4)
 
 export const simRequestAtom = atom((get) => {
     const toHit = get(toHitAtom.debouncedValueAtom)
+    let request = { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit }
 
-    return { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit };
+    if(get(torrentAtom.debouncedValueAtom))
+        request = { ...request, HitModifiers: [ ["Torrent", 0] ]}
+    
+    return request;
+    //return { ...defaultSimRequest, Attacks: get(attacksAtom.debouncedValueAtom), ToHit: toHit };
 })
