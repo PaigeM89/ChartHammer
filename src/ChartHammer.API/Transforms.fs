@@ -43,6 +43,7 @@ module Transforms =
                     Damage = damageInput
                     DamageModifiers = []
                     EnemyModelHitPoints = dto.EnemyModelHitPoints
+                    CalculateVariance = true
                 }
         }
         
@@ -60,6 +61,11 @@ module Transforms =
             WoundsResultDto.DevastatingWounds = wounds.DevastatingWounds
         }
 
+    let private transformVarianceToDto (variance : Variance) =
+        {
+            HitsVariance = variance.HitVariance
+        }
+
     let transformResultToDto (simResult : AggregateSimResult) =
         {
             SimResultDto.AttackCount = simResult.AttackCount
@@ -69,4 +75,5 @@ module Transforms =
             DamageTotal = simResult.DamageTotal
             MortalWounds = simResult.MortalWounds
             ModelsDestroyed = simResult.ModelsDestroyed
+            Variance = transformVarianceToDto simResult.Variance
         }

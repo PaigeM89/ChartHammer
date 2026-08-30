@@ -16,6 +16,25 @@ function RowHeader( { text } : TableRowProps) {
     )
 }
 
+interface NumberWithVarianceCellProps {
+    value : number
+    variance : number
+}
+
+function NumberWithVarianceCell ( {value, variance } : NumberWithVarianceCellProps) {
+    return (
+        <td className="flex flex-col items-center w-20 h-16 text-center align-middle justify-center">
+            <span>
+                {value.toFixed(4)}
+            </span>
+            
+            <span className="text-xs">
+                ±{variance.toFixed(4)}
+            </span>
+        </td>
+    )
+}
+
 interface TableNumberCell {
     value : number
 }
@@ -28,30 +47,35 @@ function NumberCell( { value } : TableNumberCell) {
     )
 }
 
-function HitsCell( { NaturalHits, SustainedHits, AutoWounds, NaturalOnes }: HitsResult) {
+interface HitsCellProps {
+    HitsResult : HitsResult
+    HitsVariance : number
+}
+
+function HitsCell( { HitsResult, HitsVariance }: HitsCellProps) {
     return (
         <div className="grid place-content-center">
             <table className="table-fixed">
                 <tbody>
                     <tr>
                         <RowHeader text="Natural Hits" />
-                        <NumberCell value={NaturalHits} />
+                        <NumberCell value={HitsResult.NaturalHits} />
                     </tr>
                     <tr>
                         <RowHeader text="Sustained Hits" />
-                        <NumberCell value={SustainedHits} />
+                        <NumberCell value={HitsResult.SustainedHits} />
                     </tr>
                     <tr>
                         <RowHeader text="Auto Wounds" />
-                        <NumberCell value={AutoWounds} />
+                        <NumberCell value={HitsResult.AutoWounds} />
                     </tr>
                     <tr>
                         <RowHeader text="Total Hits" />
-                        <NumberCell value={NaturalHits + SustainedHits} />
+                        <NumberWithVarianceCell value={HitsResult.NaturalHits + HitsResult.SustainedHits} variance={HitsVariance} />
                     </tr>
                     <tr>
                         <RowHeader text="Natural Ones" />
-                        <NumberCell value={NaturalOnes} />
+                        <NumberCell value={HitsResult.NaturalOnes} />
                     </tr>
                 </tbody>
             </table>
@@ -123,10 +147,8 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                         <NumberCell value={simResults.AttackCount} />
                         <td>
                             <HitsCell 
-                                NaturalHits={simResults.Hits.NaturalHits}
-                                SustainedHits={simResults.Hits.SustainedHits}
-                                AutoWounds={simResults.Hits.AutoWounds}
-                                NaturalOnes={simResults.Hits.NaturalOnes}
+                                HitsResult={simResults.Hits}
+                                HitsVariance={simResults.Variance?.HitsVariance ?? 0.0}
                             />
                         </td>
                         <td>
@@ -156,10 +178,8 @@ export function DataTable( { simResults } : DataTableProps ) {
                         <RowHeader text="Hits" />
                         <td>
                             <HitsCell 
-                                NaturalHits={simResults.Hits.NaturalHits}
-                                SustainedHits={simResults.Hits.SustainedHits}
-                                AutoWounds={simResults.Hits.AutoWounds}
-                                NaturalOnes={simResults.Hits.NaturalOnes}
+                                HitsResult={simResults.Hits}
+                                HitsVariance={simResults.Variance?.HitsVariance ?? 0.0}
                             />
                         </td>
                     </tr>

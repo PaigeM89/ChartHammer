@@ -81,6 +81,21 @@ module Simulation =
                     RegularWounds = this.RegularWounds / runCount
                 }        
         
+    type Variance = {
+        AttackVariance : double
+        HitVariance : double
+        WoundVariance : double
+        SaveVariance : double
+        DamageVariance : double
+    } with
+        static member Empty() = {
+            AttackVariance = 0.0
+            HitVariance = 0.0
+            WoundVariance = 0.0
+            SaveVariance = 0.0
+            DamageVariance = 0.0
+        }
+
     type AggregateSimResult =
         {
             AttackCount : float
@@ -90,6 +105,7 @@ module Simulation =
             DamageTotal : float
             MortalWounds : float
             ModelsDestroyed : float
+            Variance : Variance
         }
     with
         static member Default() = {
@@ -100,6 +116,7 @@ module Simulation =
             DamageTotal = 0.0
             MortalWounds = 0.0
             ModelsDestroyed = 0.0
+            Variance = Variance.Empty()
         }
 
         member this.AddSimResult (simResult : SimulationResult) = 
@@ -124,15 +141,37 @@ module Simulation =
                 ModelsDestroyed = this.ModelsDestroyed / runCount
             }
 
-    let simulateNTimes input count =
-        let results =
-            seq {
-                for _ in 1..count do 
-                    simulateFullAttack input
-            }
+
+    let private foldAndAggregateResults results count =
         let foldedResult =
             results
             |> Seq.fold (fun (aggregateSimResult : AggregateSimResult) simResult ->
                 aggregateSimResult.AddSimResult simResult
             ) (AggregateSimResult.Default())
         foldedResult.Normalize count
+
+    
+    let private aggregateWithVariance results count =
+        let foldedResult = foldAndAggregateResults results count
+        let hitsVariance =
+            let s =
+                results
+                |> Seq.sumBy (fun sr ->
+                    (float sr.Hits.TotalHits - foldedResult.Hits.NaturalHits) ** 2.0
+                )
+            s / count
+        let variance = 
+            { Variance.Empty() with
+                HitVariance = hitsVariance
+            }
+        { foldedResult with Variance = variance }
+
+    let simulateNTimes input count =
+        let results =
+            seq {
+                for _ in 1..count do
+                    simulateFullAttack input
+            }
+        if input.CalculateVariance
+        then aggregateWithVariance results count
+        else foldAndAggregateResults results count

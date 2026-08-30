@@ -7,7 +7,7 @@ import type {
     SimResult
 } from '../sharedSimulation/types'
 import { DataTableHorizontal } from './resultsTable'
-import { SimResultsBarChart } from './chart';
+import { SimResultsBarChart, SimResultsLineChart } from './chart';
 import { SimInput } from './simInput';
 import { isAnyDebouncing, simRequestAtom } from "./simulationAtoms";
 import { useAtomValue } from 'jotai';
@@ -45,6 +45,7 @@ function SimulationResults() {
     return (
         <div className="pl-4">
             <SimResultsBarChart simResults={data} isLoading={isDebouncing || isPending} />
+            <SimResultsLineChart simResults={data} />
             <DataTableHorizontal simResults={data} />
         </div>
     );

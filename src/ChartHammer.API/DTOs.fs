@@ -35,6 +35,7 @@ module DTOs =
             Damage: string
             DamageModifiers : string list
             EnemyModelHitPoints : int
+            CalculateVariance : bool
         }
 
     type HitsResultDto =
@@ -51,6 +52,11 @@ module DTOs =
             DevastatingWounds : float
         }
 
+    type VarianceDto =
+        {
+            HitsVariance : float
+        }
+
     type SimResultDto =
         {
             AttackCount : float
@@ -60,4 +66,5 @@ module DTOs =
             DamageTotal : float
             MortalWounds : float
             ModelsDestroyed : float
+            Variance : VarianceDto
         }

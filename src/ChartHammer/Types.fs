@@ -45,6 +45,7 @@ module Types =
         Damage : DiceRollInput
         DamageModifiers : DamageModifier list
         EnemyModelHitPoints : int
+        CalculateVariance : bool
     }
 
     type HitsResult = {

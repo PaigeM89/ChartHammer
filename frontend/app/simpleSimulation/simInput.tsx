@@ -15,7 +15,7 @@ function AttacksInput() {
                     Attacks
                 </p>
             </div>
-            <p className="text-sm text-grey-200">Enter a number or a roll, like "2d6 + 6"</p>
+            <p className="text-xs text-grey-200">Enter a number or a roll, like "2d6 + 6"</p>
             <StringInput label="Attacks" value={attacksValue} onUpdate={(v) => setAttacks(v)} />
         </div>
     )
@@ -99,7 +99,7 @@ function DamageInput() {
                     Damage
                 </p>
             </div>
-            <p className="text-sm text-grey-200">Enter a number or a roll, like "2d3 + 4"</p>
+            <p className="text-xs text-grey-200">Enter a number or a roll, like "2d3 + 4"</p>
             <StringInput label="Attacks" value={damageInput} onUpdate={(v) => setDamageInput(v)} />
         </div>
     )

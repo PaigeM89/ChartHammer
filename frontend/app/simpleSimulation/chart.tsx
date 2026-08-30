@@ -13,12 +13,16 @@ import {
   Legend,
   createHorizontalChart,
   type TooltipContentProps,
-  type TooltipIndex
+  type TooltipIndex,
+  LineChart,
+  Line,
+  ErrorBar
 } from 'recharts';
 
 interface ChartProps {
     simResults : SimResult;
-    isLoading? : boolean
+    isLoading? : boolean;
+    showVariance?: boolean;
 }
 
 function totalHits(hitResults : HitsResult) {
@@ -28,16 +32,17 @@ function totalHits(hitResults : HitsResult) {
 interface ChartData {
     name: string
     value: number
+    error?: number
 }
 
 function transformSimResults(simResults : SimResult) {
     const data : ReadonlyArray<ChartData> = 
         [
-            { name: "Attacks", value: simResults.AttackCount },
-            { name: "Hits", value: totalHits(simResults.Hits) },
-            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds },
-            { name: "Unsaved Wounds", value: simResults.UnsavedWounds },
-            { name: "Damage", value: simResults.DamageTotal }
+            { name: "Attacks", value: simResults.AttackCount, error: simResults.Variance?.HitsVariance ?? 0.0 },
+            { name: "Hits", value: totalHits(simResults.Hits), error: 0.0 },
+            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds, error: 0.0 },
+            { name: "Unsaved Wounds", value: simResults.UnsavedWounds, error: 0.0 },
+            { name: "Damage", value: simResults.DamageTotal, error: 0.0 }
         ];
     return data;
 }
@@ -89,4 +94,33 @@ export function SimResultsBarChart( { simResults, isLoading=false } : ChartProps
             <Chart simResults={simResults} />
         </div>
     )
+}
+
+export function SimResultsLineChart( {simResults, showVariance = true } : ChartProps ) {
+    const data = transformSimResults(simResults);
+    return (
+        <div className="flex justify-center items-center w-full">
+            <LineChart
+                style={{ width: '100%', height: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618}}
+                responsive
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 0,
+                    left: 0,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid />
+                <XAxis height="auto" dataKey="name" />
+                <YAxis width="auto" dataKey="value" />
+                {!showVariance && <Line type="monotone" dataKey="value" /> }
+                {showVariance 
+                    &&
+                    <Line type="monotone" dataKey="value">
+                        <ErrorBar dataKey="error" stroke="#red" />
+                    </Line> }
+            </LineChart>
+        </div>
+    );
 }

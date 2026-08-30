@@ -33,6 +33,7 @@ export interface SimRequest {
     Damage: string
     DamageModifiers: string[];
     EnemyModelHitPoints: number;
+    CalculateVariance: boolean;
 }
 
 export const defaultHitModifiers : HitModifiers =
@@ -56,7 +57,8 @@ export const defaultSimRequest : SimRequest =
         ToSave: 4,
         Damage: "1",
         DamageModifiers: [],
-        EnemyModelHitPoints: 1
+        EnemyModelHitPoints: 1,
+        CalculateVariance: true
     };
 
 export interface HitsResult {
@@ -71,6 +73,10 @@ export interface WoundsResult {
     DevastatingWounds: number;
 }
 
+export interface Variance {
+    HitsVariance : number;
+}
+
 export interface SimResult {
     AttackCount: number;
     Hits: HitsResult;
@@ -79,4 +85,5 @@ export interface SimResult {
     DamageTotal: number;
     MortalWounds: number;
     ModelsDestroyed: number;
+    Variance?: Variance;
 }
