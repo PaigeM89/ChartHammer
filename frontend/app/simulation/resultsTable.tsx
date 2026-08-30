@@ -96,6 +96,7 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                         <th scope='col'>Hits</th>
                         <th scope='col'>Wounds</th>
                         <th scope='col'>Unsaved Wounds</th>
+                        <th scope='col'>Damage</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,6 +114,7 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                             <WoundsCell woundsResult={simResults.Wounds} />
                         </td>
                         <NumberCell value={simResults.UnsavedWounds} />
+                        <NumberCell value={simResults.DamageTotal} />
                     </tr>
                 </tbody>
             </table>

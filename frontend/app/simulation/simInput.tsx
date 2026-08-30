@@ -1,4 +1,4 @@
-import { attacksAtom, criticalHitAtom, criticalWoundAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom, woundsRerollFailures, woundsRerollOnes } from "./simulationAtoms";
+import { attacksAtom, criticalHitAtom, criticalWoundAtom, damageAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom, woundsRerollFailures, woundsRerollOnes } from "./simulationAtoms";
 import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
@@ -85,12 +85,30 @@ function WoundsInput() {
     )
 }
 
+function DamageInput() {
+    const damageInput = useAtomValue(damageAtom.currentValueAtom)
+    const setDamageInput = useSetAtom(damageAtom.debouncedValueAtom)
+
+    return (
+        <div className="border pt-1 pb-1 pl-2 pr-2">
+            <div className="flex items-center justify-center">
+                <p className="mt-2 text-lg text-gray-200">
+                    Damage
+                </p>
+            </div>
+            <p className="text-sm text-grey-200">Enter a number or a roll, like "2d3 + 4"</p>
+            <StringInput label="Attacks" value={damageInput} onUpdate={(v) => setDamageInput(v)} />
+        </div>
+    )
+}
+
 export function SimInput() {
     return (
         <div>
             <AttacksInput />
             <HitsInput />
             <WoundsInput />
+            <DamageInput />
         </div>
     )
 }

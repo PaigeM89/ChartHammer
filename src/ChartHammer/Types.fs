@@ -2,9 +2,9 @@ namespace ChartHammer
 
 module Types =
 
-    type AttacksInput =
+    type DiceRollInput =
     | StaticValue of int
-    | DiceRoll of diceSides : int * diceCount : int * staticModifier : int
+    | DiceRoll of diceCount : int * diceSides : int * staticModifier : int
 
     type HitModifiers = {
         Torrent : bool
@@ -24,11 +24,6 @@ module Types =
             Hazardous = false
             CriticalHit = 6
         }
-    
-    type WoundModifier =
-    | Devastating
-    | RerollOnes
-    | RerollFailures
 
     type WoundModifiers = {
         Devastating : bool
@@ -41,13 +36,13 @@ module Types =
     | Melta of int
 
     type SimulationInput = {
-        Attacks: AttacksInput
+        Attacks: DiceRollInput
         ToHit: int
         HitModifiers : HitModifiers
         ToWound: int
-        WoundModifiers : WoundModifiers // WoundModifier list
+        WoundModifiers : WoundModifiers
         ToSave: int
-        DamagePerHit: int
+        Damage : DiceRollInput
         DamageModifiers : DamageModifier list
         EnemyModelHitPoints : int
     }

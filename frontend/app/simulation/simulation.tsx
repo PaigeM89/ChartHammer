@@ -43,7 +43,7 @@ function SimulationResults() {
     if (isError) return 'An error has occurred'
     if (!data) return 'Failed to parse response'
     return (
-        <div>
+        <div className="pl-4">
             <SimResultsBarChart simResults={data} isLoading={isDebouncing || isPending} />
             <DataTableHorizontal simResults={data} />
         </div>

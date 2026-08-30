@@ -7,14 +7,15 @@ open ChartHammer.API.DTOs
 
 module Transforms =
 
-    let private parseAttacks (str : string) =
+    let private parseDiceString (str : string) =
         match System.Int32.TryParse str with
-        | true, x -> AttacksInput.StaticValue x |> Ok
+        | true, x -> DiceRollInput.StaticValue x |> Ok
         | false, _ -> ChartHammer.DiceParser.tryParse str
 
     let transformDtoToDomain (dto : SimulationInputDto) = 
         result {
-            let! attacksInput = parseAttacks dto.Attacks
+            let! attacksInput = parseDiceString dto.Attacks
+            let! damageInput = parseDiceString dto.Damage
 
             return 
                 {
@@ -39,7 +40,7 @@ module Transforms =
                             CriticalWound = dto.WoundModifiers.CriticalWound
                         }
                     ToSave = dto.ToSave
-                    DamagePerHit = dto.DamagePerHit
+                    Damage = damageInput
                     DamageModifiers = []
                     EnemyModelHitPoints = dto.EnemyModelHitPoints
                 }

@@ -8,10 +8,13 @@ module Damage =
         if simResult.UnsavedWoundCount <= 0
         then simResult
         else
-            let damageTotal = input.DamagePerHit * simResult.UnsavedWoundCount
-            let modelsDestroyed = 
-                float damageTotal / float input.EnemyModelHitPoints
-            { simResult with
-                DamageTotal = damageTotal
-                ModelsDestroyed = int modelsDestroyed
-            }
+            match input.Damage with
+            | StaticValue d ->
+                let damageTotal = d * simResult.UnsavedWoundCount
+                let modelsDestroyed = 
+                    float damageTotal / float input.EnemyModelHitPoints
+                { simResult with
+                    DamageTotal = damageTotal
+                    ModelsDestroyed = int modelsDestroyed
+                }
+            | _ -> simResult

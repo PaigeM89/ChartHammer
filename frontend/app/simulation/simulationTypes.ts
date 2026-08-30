@@ -30,7 +30,7 @@ export interface SimRequest {
     ToWound: number;
     WoundModifiers: WoundModifiers;
     ToSave: number;
-    DamagePerHit: number;
+    Damage: string
     DamageModifiers: string[];
     EnemyModelHitPoints: number;
 }
@@ -54,7 +54,7 @@ export const defaultSimRequest : SimRequest =
         ToWound: 4,
         WoundModifiers: defaultWoundModifiers,
         ToSave: 4,
-        DamagePerHit: 1,
+        Damage: "1",
         DamageModifiers: [],
         EnemyModelHitPoints: 1
     };

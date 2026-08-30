@@ -36,7 +36,8 @@ function transformSimResults(simResults : SimResult) {
             { name: "Attacks", value: simResults.AttackCount },
             { name: "Hits", value: totalHits(simResults.Hits) },
             { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds },
-            { name: "Unsaved Wounds", value: simResults.UnsavedWounds }
+            { name: "Unsaved Wounds", value: simResults.UnsavedWounds },
+            { name: "Damage", value: simResults.DamageTotal }
         ];
     return data;
 }

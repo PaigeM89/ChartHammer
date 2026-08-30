@@ -32,7 +32,7 @@ module DTOs =
             ToWound: int            
             WoundModifiers : WoundModifiers
             ToSave: int
-            DamagePerHit: int
+            Damage: string
             DamageModifiers : string list
             EnemyModelHitPoints : int
         }
