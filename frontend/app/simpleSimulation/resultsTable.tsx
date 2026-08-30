@@ -2,7 +2,7 @@ import type {
     HitsResult,
     SimResult,
     WoundsResult
-} from './simulationTypes'
+} from '../sharedSimulation/types'
 
 interface TableRowProps {
     text: string

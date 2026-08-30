@@ -1,5 +1,5 @@
 import { atom, type SetStateAction } from 'jotai'
-import { defaultHitModifiers, defaultSimRequest } from './simulationTypes'
+import { defaultHitModifiers, defaultSimRequest } from '../sharedSimulation/types'
 
 // Copied from Jotai's website
 function atomWithDebounce<T>(

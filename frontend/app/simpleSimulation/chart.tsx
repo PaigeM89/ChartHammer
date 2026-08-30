@@ -2,7 +2,7 @@ import { Loader } from 'lucide-react';
 import type {
     HitsResult,
     SimResult
-} from './simulationTypes'
+} from '../sharedSimulation/types'
 import {
   BarChart,
   Bar,

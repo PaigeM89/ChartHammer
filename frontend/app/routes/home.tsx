@@ -1,7 +1,8 @@
 import type { Route } from "./+types/home";
 import { SimulationRoot } from '../simpleSimulation/simulation';
-import { Header } from "~/header/header";
-import { Footer } from "~/footer/footer";
+import { LayeredSimulationRoot } from '../layeredSimulation/simulationRoot';
+import { useAtomValue } from "jotai";
+import { CurrentTab, currentTabAtom } from "~/globalAtoms";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,12 +11,31 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+function SimpleSimulation() {
   return (
     <main>
-      <Header />
       <SimulationRoot />
-      <Footer />
     </main>
-  );
+  )
+}
+
+function LayeredSimulation() {
+   return (
+    <main>
+      <LayeredSimulationRoot />
+    </main>
+  )
+}
+
+export default function Home() {
+  return SimpleSimulation()
+  //const currentTab = useAtomValue(currentTabAtom)
+  // if (currentTab === CurrentTab.Simple)
+  // {
+  //   return SimpleSimulation()
+  // }
+  // else
+  // {
+  //   return LayeredSimulation();
+  // }
 }

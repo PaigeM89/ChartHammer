@@ -5,7 +5,7 @@ import {
 import type {
     SimRequest,
     SimResult
-} from './simulationTypes'
+} from '../sharedSimulation/types'
 import { DataTableHorizontal } from './resultsTable'
 import { SimResultsBarChart } from './chart';
 import { SimInput } from './simInput';
