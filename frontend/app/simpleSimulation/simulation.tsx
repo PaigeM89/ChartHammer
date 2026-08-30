@@ -44,7 +44,6 @@ function SimulationResults() {
     if (!data) return 'Failed to parse response'
     return (
         <div className="pl-4">
-            <SimResultsBarChart simResults={data} isLoading={isDebouncing || isPending} />
             <SimResultsLineChart simResults={data} />
             <DataTableHorizontal simResults={data} />
         </div>

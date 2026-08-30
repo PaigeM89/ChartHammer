@@ -23,7 +23,7 @@ interface NumberWithVarianceCellProps {
 
 function NumberWithVarianceCell ( {value, variance } : NumberWithVarianceCellProps) {
     return (
-        <td className="flex flex-col items-center w-20 h-16 text-center align-middle justify-center">
+        <td className="border border-grey-300 h-16 flex flex-col items-center w-20 h-16 text-center align-middle justify-center">
             <span>
                 {value.toFixed(4)}
             </span>
@@ -144,7 +144,7 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                 </thead>
                 <tbody>
                     <tr>
-                        <NumberCell value={simResults.AttackCount} />
+                        <NumberWithVarianceCell value={simResults.AttackCount} variance={simResults.Variance?.AttacksVariance ?? 0.0} />
                         <td>
                             <HitsCell 
                                 HitsResult={simResults.Hits}
@@ -172,7 +172,7 @@ export function DataTable( { simResults } : DataTableProps ) {
                 <tbody>
                     <tr>
                         <RowHeader text="Attacks" />
-                        <NumberCell value={simResults.AttackCount} />
+                        <NumberWithVarianceCell value={simResults.AttackCount} variance={simResults.Variance?.AttacksVariance ?? 0.0} />
                     </tr>
                     <tr>
                         <RowHeader text="Hits" />

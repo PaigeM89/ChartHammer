@@ -63,6 +63,7 @@ module Transforms =
 
     let private transformVarianceToDto (variance : Variance) =
         {
+            AttacksVariance = variance.AttackVariance
             HitsVariance = variance.HitVariance
         }
 

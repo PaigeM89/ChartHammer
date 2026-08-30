@@ -54,6 +54,7 @@ module DTOs =
 
     type VarianceDto =
         {
+            AttacksVariance : float
             HitsVariance : float
         }
 

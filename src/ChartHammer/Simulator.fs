@@ -150,18 +150,22 @@ module Simulation =
             ) (AggregateSimResult.Default())
         foldedResult.Normalize count
 
-    
     let private aggregateWithVariance results count =
         let foldedResult = foldAndAggregateResults results count
+        let attacksVariance =
+            let s =
+                results |> Seq.sumBy (fun sr -> (float sr.AttackCount - foldedResult.AttackCount) ** 2.0)
+            s / count
         let hitsVariance =
             let s =
                 results
                 |> Seq.sumBy (fun sr ->
-                    (float sr.Hits.TotalHits - foldedResult.Hits.NaturalHits) ** 2.0
+                    (float sr.Hits.NaturalHits - foldedResult.Hits.NaturalHits) ** 2.0
                 )
             s / count
         let variance = 
             { Variance.Empty() with
+                AttackVariance = attacksVariance
                 HitVariance = hitsVariance
             }
         { foldedResult with Variance = variance }
