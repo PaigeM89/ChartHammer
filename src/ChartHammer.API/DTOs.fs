@@ -4,6 +4,12 @@ namespace ChartHammer.API
 module DTOs =
 
     [<CLIMutable>]
+    type WoundModifiers = 
+        {
+            DevastatingWounds : bool
+        }
+
+    [<CLIMutable>]
     type SimulationInputDto =
         {
             Attacks: string
@@ -11,7 +17,8 @@ module DTOs =
             HitModifiers : (string * int) list
             ToWound: int
             CriticalWound : int
-            WoundModifiers : string list
+            //WoundModifiers : string list
+            WoundModifiers : WoundModifiers
             ToSave: int
             DamagePerHit: int
             DamageModifiers : string list

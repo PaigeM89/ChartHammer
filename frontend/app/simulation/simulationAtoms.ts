@@ -72,16 +72,22 @@ export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
 export const lethalHitsAtom = atomWithDebounce(false)
 export const toWoundAtom = atomWithDebounce(4)
+export const devastatingWoundsEnabled = atomWithDebounce(false)
+export const precisionHitsEnabled = atomWithDebounce(false)
 export const criticalWoundAtom = atomWithDebounce(6)
 
-
 export const simRequestAtom = atom((get) => {
+    let criticalWound = get(criticalWoundAtom.debouncedValueAtom);
+    if (!get(devastatingWoundsEnabled.debouncedValueAtom))
+    {
+      criticalWound = 7;
+    }
     let request = { 
       ...defaultSimRequest,
       Attacks: get(attacksAtom.debouncedValueAtom), 
       ToHit: get(toHitAtom.debouncedValueAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
-      CriticalWound: get(criticalWoundAtom.debouncedValueAtom),
+      CriticalWound: criticalWound,
     }
 
     if(get(torrentAtom.debouncedValueAtom))
@@ -89,6 +95,11 @@ export const simRequestAtom = atom((get) => {
     
     if(get(lethalHitsAtom.debouncedValueAtom))
         request = { ...request, HitModifiers: [...request.HitModifiers, ["LethalHits", 0 ] ] }
+
+    if(get(devastatingWoundsEnabled.debouncedValueAtom))
+        request = { ...request, WoundModifiers: { DevastatingWounds: get(devastatingWoundsEnabled.debouncedValueAtom) } }
+
+    console.log('sim request atom updated', request);
 
     return request;
 })

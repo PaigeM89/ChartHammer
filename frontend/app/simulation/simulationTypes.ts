@@ -1,10 +1,14 @@
+export interface WoundModifiers {
+    DevastatingWounds : boolean
+}
+
 export interface SimRequest {
     Attacks: string;
     ToHit: number;
     HitModifiers: [string, number][];
     ToWound: number;
     CriticalWound: number;
-    WoundModifiers: string[];
+    WoundModifiers: WoundModifiers;
     ToSave: number;
     DamagePerHit: number;
     DamageModifiers: string[];
@@ -18,7 +22,7 @@ export const defaultSimRequest : SimRequest =
         HitModifiers: [],
         ToWound: 4,
         CriticalWound: 6,
-        WoundModifiers: [],
+        WoundModifiers: { DevastatingWounds: false },
         ToSave: 4,
         DamagePerHit: 1,
         DamageModifiers: [],

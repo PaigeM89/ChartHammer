@@ -39,7 +39,11 @@ module Transforms =
                     HitModifiers = hitModifiers
                     ToWound = dto.ToWound
                     CriticalWound = dto.CriticalWound
-                    WoundModifiers = []
+                    WoundModifiers = 
+                        [
+                            if dto.WoundModifiers.DevastatingWounds
+                            then yield WoundModifier.Devastating
+                        ]
                     ToSave = dto.ToSave
                     DamagePerHit = dto.DamagePerHit
                     DamageModifiers = []
