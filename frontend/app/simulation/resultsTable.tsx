@@ -45,6 +45,10 @@ function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: H
                         <NumberCell value={AutoWounds} />
                     </tr>
                     <tr>
+                        <RowHeader text="Total Hits" />
+                        <NumberCell value={NaturalHits + SustainedHits} />
+                    </tr>
+                    <tr>
                         <RowHeader text="Natural Ones" />
                         <NumberCell value={HitNaturalOnes} />
                     </tr>
