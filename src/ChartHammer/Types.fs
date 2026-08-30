@@ -22,21 +22,6 @@ module Types =
             RerollFailures = false
             Hazardous = false
         }
-
-    type HitModifier =
-    // auto-hit, skip the whole step
-    | Torrent
-    // -1 to hit
-    // do i need this?
-    | TargetInStealth
-    | LethalHits
-    // do i need this?
-    | Heavy
-    | SustainedHits of int
-    // do i need this?
-    | Hazardous
-    | RerollOnes
-    | RerollFailures
     
     type WoundModifier =
     // | TwinLinked

@@ -71,6 +71,10 @@ export const attacksAtom = atomWithDebounce("10")
 export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
 export const lethalHitsAtom = atomWithDebounce(false)
+export const sustainedHitsAtom = atomWithDebounce(0)
+export const hitsRerollOnes = atomWithDebounce(false)
+export const hitsRerollFailures = atomWithDebounce(false)
+export const hazardous = atomWithDebounce(false)
 export const toWoundAtom = atomWithDebounce(4)
 export const devastatingWoundsEnabled = atomWithDebounce(false)
 export const precisionHitsEnabled = atomWithDebounce(false)
@@ -81,7 +85,11 @@ export const hitsModifierAtom = atom((get) => {
     {
       ...defaultHitModifiers,
       Torrent: get(torrentAtom.debouncedValueAtom),
-      LethalHits: get(lethalHitsAtom.debouncedValueAtom)
+      LethalHits: get(lethalHitsAtom.debouncedValueAtom),
+      SustainedHits: get(sustainedHitsAtom.debouncedValueAtom),
+      RerollOnes: get(hitsRerollOnes.debouncedValueAtom),
+      RerollFailures: get(hitsRerollFailures.debouncedValueAtom),
+      Hazardous: get(hazardous.debouncedValueAtom)
     }
   return hitModifiers;
 })
