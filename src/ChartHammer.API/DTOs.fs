@@ -11,6 +11,7 @@ module DTOs =
         RerollOnes : bool
         RerollFailures : bool
         Hazardous : bool
+        CriticalHit : int
     }
 
     [<CLIMutable>]

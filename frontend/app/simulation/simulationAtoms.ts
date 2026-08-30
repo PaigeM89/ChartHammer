@@ -75,6 +75,7 @@ export const sustainedHitsAtom = atomWithDebounce(0)
 export const hitsRerollOnes = atomWithDebounce(false)
 export const hitsRerollFailures = atomWithDebounce(false)
 export const hazardous = atomWithDebounce(false)
+export const criticalHitAtom = atomWithDebounce(6)
 export const toWoundAtom = atomWithDebounce(4)
 export const devastatingWoundsEnabled = atomWithDebounce(false)
 export const precisionHitsEnabled = atomWithDebounce(false)
@@ -89,7 +90,8 @@ export const hitsModifierAtom = atom((get) => {
       SustainedHits: get(sustainedHitsAtom.debouncedValueAtom),
       RerollOnes: get(hitsRerollOnes.debouncedValueAtom),
       RerollFailures: get(hitsRerollFailures.debouncedValueAtom),
-      Hazardous: get(hazardous.debouncedValueAtom)
+      Hazardous: get(hazardous.debouncedValueAtom),
+      CriticalHit: get(criticalHitAtom.debouncedValueAtom)
     }
   return hitModifiers;
 })

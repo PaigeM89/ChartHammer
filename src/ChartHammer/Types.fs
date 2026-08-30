@@ -13,6 +13,7 @@ module Types =
         RerollOnes : bool
         RerollFailures : bool
         Hazardous : bool
+        CriticalHit : int
     } with
         static member Default() = {
             Torrent = false
@@ -21,11 +22,10 @@ module Types =
             RerollOnes = false
             RerollFailures = false
             Hazardous = false
+            CriticalHit = 6
         }
     
     type WoundModifier =
-    // | TwinLinked
-    // | Lance
     | Devastating
     | RerollOnes
     | RerollFailures

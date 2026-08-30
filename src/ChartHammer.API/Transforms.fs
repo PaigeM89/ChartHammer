@@ -28,6 +28,7 @@ module Transforms =
                             RerollOnes = dto.HitModifiers.RerollOnes
                             RerollFailures = dto.HitModifiers.RerollFailures
                             Hazardous = dto.HitModifiers.Hazardous
+                            CriticalHit = dto.HitModifiers.CriticalHit
                         }
                     ToWound = dto.ToWound
                     CriticalWound = dto.CriticalWound

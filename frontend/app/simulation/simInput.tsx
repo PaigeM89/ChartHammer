@@ -1,4 +1,4 @@
-import { attacksAtom, criticalWoundAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom } from "./simulationAtoms";
+import { attacksAtom, criticalHitAtom, criticalWoundAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom } from "./simulationAtoms";
 import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
@@ -14,6 +14,8 @@ function HitsInput() {
     const setLethalHits = useSetAtom(lethalHitsAtom.debouncedValueAtom)
     const sustainedHits = useAtomValue(sustainedHitsAtom.currentValueAtom)
     const setSustainedHits = useSetAtom(sustainedHitsAtom.debouncedValueAtom)
+    const criticalHit = useAtomValue(criticalHitAtom.currentValueAtom)
+    const setCriticalHit = useSetAtom(criticalHitAtom.debouncedValueAtom)
 
     const rerollOnes = useAtomValue(hitsRerollOnes.currentValueAtom)
     const setRerollOnes = useSetAtom(hitsRerollOnes.debouncedValueAtom)
@@ -31,6 +33,7 @@ function HitsInput() {
             <NumericInput label="To Hit" value={toHit} onUpdate={(v) => setToHit(v)} disabled={torrent} minValue={2} maxValue={6} />
             <Checkbox label="Lethal Hits" value={lethalHits} onUpdate={(b) => setLethalHits(b)} />
             <NumericInput label="Sustained Hits" value={sustainedHits} onUpdate={(v) => setSustainedHits(v)} disabled={torrent} minValue={0} maxValue={10} />
+            <NumericInput label="Critical Hit" value={criticalHit} onUpdate={(v) => setCriticalHit(v)} disabled={torrent} minValue={2} maxValue={6} />
             <Checkbox label="Reroll Ones" disabled={rerollFailures} value={rerollOnes} onUpdate={(b) => setRerollOnes(b)} />
             <Checkbox label="Reroll Failures" disabled={rerollOnes} value={rerollFailures} onUpdate={(b) => setRerollFailures(b)} />
         </div>

@@ -5,6 +5,7 @@ export interface HitModifiers {
     RerollOnes : boolean
     RerollFailures : boolean
     Hazardous : boolean
+    CriticalHit : number
 }
 
 export interface WoundModifiers {
@@ -31,7 +32,8 @@ export const defaultHitModifiers : HitModifiers =
         SustainedHits: 0,
         RerollOnes: false,
         RerollFailures: false,
-        Hazardous: false
+        Hazardous: false,
+        CriticalHit: 6
     }
 
 export const defaultSimRequest : SimRequest =
