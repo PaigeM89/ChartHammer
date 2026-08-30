@@ -41,7 +41,7 @@ function transformSimResults(simResults : SimResult) {
         [
             { name: "Attacks", value: simResults.AttackCount, variance: simResults.Variance?.AttacksVariance ?? 0.0 },
             { name: "Hits", value: totalHits(simResults.Hits), variance: simResults.Variance?.HitsVariance ?? 0.0 },
-            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds, variance: 0.0 },
+            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds, variance: simResults.Variance?.WoundsVariance ?? 0.0 },
             { name: "Unsaved Wounds", value: simResults.UnsavedWounds, variance: 0.0 },
             { name: "Damage", value: simResults.DamageTotal, variance: 0.0 }
         ];

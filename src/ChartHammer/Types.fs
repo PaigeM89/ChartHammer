@@ -78,11 +78,6 @@ module Types =
 
         Wounds: WoundsResult
 
-        DevastatingWounds : int
-        RegularWounds : int
-        // Of the amount of regular wounds, this many wounds were critical (auto successes and may trigger other rules)
-        CriticalWounds : int
-
         UnsavedWoundCount : int
         DamageTotal: int
         /// Separate value from Damage Total
@@ -93,9 +88,6 @@ module Types =
             AttackCount = 0
             Hits = HitsResult.Empty()
             Wounds = WoundsResult.RegularWounds 0
-            DevastatingWounds = 0
-            RegularWounds = 0
-            CriticalWounds = 0
             UnsavedWoundCount = 0
             DamageTotal = 0
             MortalWounds = 0

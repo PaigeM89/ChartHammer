@@ -56,6 +56,7 @@ module DTOs =
         {
             AttacksVariance : float
             HitsVariance : float
+            WoundsVariance : float
         }
 
     type SimResultDto =

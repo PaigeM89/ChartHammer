@@ -84,10 +84,11 @@ function HitsCell( { HitsResult, HitsVariance }: HitsCellProps) {
 }
 
 interface WoundsCellProps {
-    woundsResult : WoundsResult
+    woundsResult : WoundsResult,
+    woundsVariance : number
 }
 
-function WoundsCell( { woundsResult } : WoundsCellProps) {
+function WoundsCell( { woundsResult, woundsVariance } : WoundsCellProps) {
     return (
         <div className="grid place-content-center">
             <table className="table-fixed">
@@ -99,6 +100,13 @@ function WoundsCell( { woundsResult } : WoundsCellProps) {
                     <tr>
                         <RowHeader text="Devastating Wounds" />
                         <NumberCell value={woundsResult.DevastatingWounds} />
+                    </tr>
+                    <tr>
+                        <RowHeader text="Total Wounds" />
+                        <NumberWithVarianceCell 
+                            value={woundsResult.DevastatingWounds + woundsResult.RegularWounds}
+                            variance={woundsVariance}
+                        />
                     </tr>
                 </tbody>
             </table>
@@ -152,7 +160,7 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                             />
                         </td>
                         <td>
-                            <WoundsCell woundsResult={simResults.Wounds} />
+                            <WoundsCell woundsResult={simResults.Wounds} woundsVariance={simResults.Variance?.WoundsVariance ?? 0.0} />
                         </td>
                         <NumberCell value={simResults.UnsavedWounds} />
                         <td>

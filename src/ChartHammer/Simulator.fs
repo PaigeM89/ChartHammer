@@ -163,10 +163,20 @@ module Simulation =
                     (float sr.Hits.NaturalHits - foldedResult.Hits.NaturalHits) ** 2.0
                 )
             s / count
+        let woundVariance =
+            let s =
+                results
+                |> Seq.sumBy (fun sr ->
+                    match sr.Wounds with
+                    | RegularWounds x -> (float x - foldedResult.Wounds.RegularWounds) ** 2.0
+                    | DevastatingWounds (d, x) -> (float (d + x) - foldedResult.Wounds.DevastatingWounds - foldedResult.Wounds.RegularWounds) ** 2.0
+                )
+            s / count
         let variance = 
             { Variance.Empty() with
                 AttackVariance = attacksVariance
                 HitVariance = hitsVariance
+                WoundVariance = woundVariance
             }
         { foldedResult with Variance = variance }
 
