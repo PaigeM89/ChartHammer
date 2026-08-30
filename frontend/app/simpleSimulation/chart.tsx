@@ -16,7 +16,8 @@ import {
   type TooltipIndex,
   LineChart,
   Line,
-  ErrorBar
+  ErrorBar,
+  Area
 } from 'recharts';
 
 interface ChartProps {
@@ -32,17 +33,17 @@ function totalHits(hitResults : HitsResult) {
 interface ChartData {
     name: string
     value: number
-    error?: number
+    variance: number
 }
 
 function transformSimResults(simResults : SimResult) {
     const data : ReadonlyArray<ChartData> = 
         [
-            { name: "Attacks", value: simResults.AttackCount, error: simResults.Variance?.HitsVariance ?? 0.0 },
-            { name: "Hits", value: totalHits(simResults.Hits), error: 0.0 },
-            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds, error: 0.0 },
-            { name: "Unsaved Wounds", value: simResults.UnsavedWounds, error: 0.0 },
-            { name: "Damage", value: simResults.DamageTotal, error: 0.0 }
+            { name: "Attacks", value: simResults.AttackCount, variance: simResults.Variance?.AttacksVariance ?? 0.0 },
+            { name: "Hits", value: totalHits(simResults.Hits), variance: simResults.Variance?.HitsVariance ?? 0.0 },
+            { name: "Wounds", value: simResults.Wounds.RegularWounds + simResults.Wounds.DevastatingWounds, variance: 0.0 },
+            { name: "Unsaved Wounds", value: simResults.UnsavedWounds, variance: 0.0 },
+            { name: "Damage", value: simResults.DamageTotal, variance: 0.0 }
         ];
     return data;
 }
@@ -114,12 +115,9 @@ export function SimResultsLineChart( {simResults, showVariance = true } : ChartP
                 <CartesianGrid />
                 <XAxis height="auto" dataKey="name" />
                 <YAxis width="auto" dataKey="value" />
-                {!showVariance && <Line type="monotone" dataKey="value" /> }
-                {showVariance 
-                    &&
-                    <Line type="monotone" dataKey="value">
-                        <ErrorBar dataKey="error" stroke="#red" />
-                    </Line> }
+                <Line type="monotone" dataKey="value">
+                    <ErrorBar dataKey="variance" width={4} stroke="#ff7300" />
+                </Line>
             </LineChart>
         </div>
     );

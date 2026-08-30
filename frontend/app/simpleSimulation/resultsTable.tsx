@@ -23,7 +23,7 @@ interface NumberWithVarianceCellProps {
 
 function NumberWithVarianceCell ( {value, variance } : NumberWithVarianceCellProps) {
     return (
-        <td className="border border-grey-300 h-16 flex flex-col items-center w-20 h-16 text-center align-middle justify-center">
+        <td className="border border-grey-300 w-20 h-16 flex flex-col items-center w-20 h-16 text-center align-middle justify-center">
             <span>
                 {value.toFixed(4)}
             </span>
