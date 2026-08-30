@@ -1,3 +1,12 @@
+export interface HitModifiers {
+    Torrent : boolean
+    LethalHits : boolean
+    SustainedHits : number
+    RerollOnes : boolean
+    RerollFailures : boolean
+    Hazardous : boolean
+}
+
 export interface WoundModifiers {
     DevastatingWounds : boolean
 }
@@ -5,7 +14,7 @@ export interface WoundModifiers {
 export interface SimRequest {
     Attacks: string;
     ToHit: number;
-    HitModifiers: [string, number][];
+    HitModifiers: HitModifiers;
     ToWound: number;
     CriticalWound: number;
     WoundModifiers: WoundModifiers;
@@ -15,11 +24,21 @@ export interface SimRequest {
     EnemyModelHitPoints: number;
 }
 
+export const defaultHitModifiers : HitModifiers =
+    {
+        Torrent: false,
+        LethalHits: false,
+        SustainedHits: 0,
+        RerollOnes: false,
+        RerollFailures: false,
+        Hazardous: false
+    }
+
 export const defaultSimRequest : SimRequest =
     {
         Attacks: "10",
         ToHit: 4,
-        HitModifiers: [],
+        HitModifiers: defaultHitModifiers,
         ToWound: 4,
         CriticalWound: 6,
         WoundModifiers: { DevastatingWounds: false },

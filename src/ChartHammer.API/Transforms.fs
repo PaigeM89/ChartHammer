@@ -30,13 +30,21 @@ module Transforms =
     let transformDtoToDomain (dto : SimulationInputDto) = 
         result {
             let! attacksInput = parseAttacks dto.Attacks
-            let! hitModifiers = parseHitModifiers dto.HitModifiers
+            //let! hitModifiers = parseHitModifiers dto.HitModifiers
 
             return 
                 {
                     SimulationInput.Attacks = attacksInput
                     ToHit = dto.ToHit
-                    HitModifiers = hitModifiers
+                    HitModifiers = 
+                        {
+                            HitModifiers.Torrent = dto.HitModifiers.Torrent
+                            LethalHits = dto.HitModifiers.LethalHits
+                            SustainedHits = dto.HitModifiers.SustainedHits
+                            RerollOnes = dto.HitModifiers.RerollOnes
+                            RerollFailures = dto.HitModifiers.RerollFailures
+                            Hazardous = dto.HitModifiers.Hazardous
+                        }
                     ToWound = dto.ToWound
                     CriticalWound = dto.CriticalWound
                     WoundModifiers = 

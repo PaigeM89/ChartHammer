@@ -1,5 +1,5 @@
 import { atom, type SetStateAction } from 'jotai'
-import { defaultSimRequest } from './simulationTypes'
+import { defaultHitModifiers, defaultSimRequest } from './simulationTypes'
 
 // Copied from Jotai's website
 function atomWithDebounce<T>(
@@ -76,6 +76,16 @@ export const devastatingWoundsEnabled = atomWithDebounce(false)
 export const precisionHitsEnabled = atomWithDebounce(false)
 export const criticalWoundAtom = atomWithDebounce(6)
 
+export const hitsModifierAtom = atom((get) => {
+  let hitModifiers = 
+    {
+      ...defaultHitModifiers,
+      Torrent: get(torrentAtom.debouncedValueAtom),
+      LethalHits: get(lethalHitsAtom.debouncedValueAtom)
+    }
+  return hitModifiers;
+})
+
 export const simRequestAtom = atom((get) => {
     let criticalWound = get(criticalWoundAtom.debouncedValueAtom);
     if (!get(devastatingWoundsEnabled.debouncedValueAtom))
@@ -86,20 +96,13 @@ export const simRequestAtom = atom((get) => {
       ...defaultSimRequest,
       Attacks: get(attacksAtom.debouncedValueAtom), 
       ToHit: get(toHitAtom.debouncedValueAtom),
+      HitModifiers: get(hitsModifierAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
       CriticalWound: criticalWound,
     }
 
-    if(get(torrentAtom.debouncedValueAtom))
-        request = { ...request, HitModifiers: [ ["Torrent", 0] ]}
-    
-    if(get(lethalHitsAtom.debouncedValueAtom))
-        request = { ...request, HitModifiers: [...request.HitModifiers, ["LethalHits", 0 ] ] }
-
     if(get(devastatingWoundsEnabled.debouncedValueAtom))
         request = { ...request, WoundModifiers: { DevastatingWounds: get(devastatingWoundsEnabled.debouncedValueAtom) } }
-
-    console.log('sim request atom updated', request);
 
     return request;
 })

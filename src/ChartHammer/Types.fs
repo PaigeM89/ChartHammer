@@ -6,6 +6,23 @@ module Types =
     | StaticValue of int
     | DiceRoll of diceSides : int * diceCount : int * staticModifier : int
 
+    type HitModifiers = {
+        Torrent : bool
+        LethalHits : bool
+        SustainedHits : int
+        RerollOnes : bool
+        RerollFailures : bool
+        Hazardous : bool
+    } with
+        static member Default() = {
+            Torrent = false
+            LethalHits = false
+            SustainedHits = 0
+            RerollOnes = false
+            RerollFailures = false
+            Hazardous = false
+        }
+
     type HitModifier =
     // auto-hit, skip the whole step
     | Torrent
@@ -34,7 +51,7 @@ module Types =
     type SimulationInput = {
         Attacks: AttacksInput
         ToHit: int
-        HitModifiers : HitModifier list
+        HitModifiers : HitModifiers
         ToWound: int
         CriticalWound: int
         WoundModifiers : WoundModifier list
