@@ -25,14 +25,15 @@ module WoundRolls =
                 generate hitsToRoll |> Seq.toList
                 |> runRerolls input
             let successfulWounds, _ = rolls |> List.partition (fun r -> r >= input.ToWound)
+            let criticalWounds, regularWounds = successfulWounds |> List.partition (fun r -> r >= input.CriticalWound)
             if input.WoundModifiers |> List.contains Devastating
             then
-                let devWounds, otherWounds = successfulWounds |> List.partition (fun r -> r = 6)
-                { simResult with
-                    DevastatingWounds = devWounds |> List.length
-                    RegularWounds = (otherWounds |> List.length) + simResult.Hits.AutoWounds
-                }
+                let criticalWounds = criticalWounds |> List.length
+                let successfulWounds = regularWounds |> List.length
+                let woundResult = WoundsResult.DevastatingWounds (criticalWounds, successfulWounds + simResult.Hits.AutoWounds)
+                { simResult with Wounds = woundResult }
             else
-                { simResult with
-                    RegularWounds = (successfulWounds |> List.length) + simResult.Hits.AutoWounds
-                }
+                let criticalWounds = criticalWounds |> List.length
+                let successfulWounds = regularWounds |> List.length
+                let woundResult = WoundsResult.RegularWounds <| criticalWounds + successfulWounds + simResult.Hits.AutoWounds
+                { simResult with Wounds = woundResult }

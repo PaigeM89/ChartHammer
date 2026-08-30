@@ -2,6 +2,7 @@ namespace ChartHammer.API
 
 open FsToolkit.ErrorHandling
 open ChartHammer.Types
+open ChartHammer.Simulation
 open ChartHammer.API.DTOs
 
 module Transforms =
@@ -37,6 +38,7 @@ module Transforms =
                     ToHit = dto.ToHit
                     HitModifiers = hitModifiers
                     ToWound = dto.ToWound
+                    CriticalWound = dto.CriticalWound
                     WoundModifiers = []
                     ToSave = dto.ToSave
                     DamagePerHit = dto.DamagePerHit
@@ -45,3 +47,27 @@ module Transforms =
                 }
         }
         
+    let private transformHitsResultToDto (hits : AggregateHitsResult) =
+        {
+            HitsResultDto.NaturalHits = hits.NaturalHits
+            SustainedHits = hits.SustainedHits
+            AutoWounds = hits.AutoWounds
+            NaturalOnes = hits.HitNaturalOnes
+        }
+
+    let private transformWoundsResultToDto (wounds : AggregateWoundsResult) =
+        {
+            WoundsResultDto.RegularWounds = wounds.RegularWounds
+            WoundsResultDto.DevastatingWounds = wounds.DevastatingWounds
+        }
+
+    let transformResultToDto (simResult : AggregateSimResult) =
+        {
+            SimResultDto.AttackCount = simResult.AttackCount
+            Hits = transformHitsResultToDto simResult.Hits
+            Wounds = transformWoundsResultToDto simResult.Wounds
+            UnsavedWounds = simResult.UnsavedWoundCount
+            DamageTotal = simResult.DamageTotal
+            MortalWounds = simResult.MortalWounds
+            ModelsDestroyed = simResult.ModelsDestroyed
+        }

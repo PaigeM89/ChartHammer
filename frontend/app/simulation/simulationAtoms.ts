@@ -72,6 +72,7 @@ export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
 export const lethalHitsAtom = atomWithDebounce(false)
 export const toWoundAtom = atomWithDebounce(4)
+export const criticalWoundAtom = atomWithDebounce(6)
 
 
 export const simRequestAtom = atom((get) => {
@@ -80,6 +81,7 @@ export const simRequestAtom = atom((get) => {
       Attacks: get(attacksAtom.debouncedValueAtom), 
       ToHit: get(toHitAtom.debouncedValueAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
+      CriticalWound: get(criticalWoundAtom.debouncedValueAtom),
     }
 
     if(get(torrentAtom.debouncedValueAtom))
@@ -101,6 +103,9 @@ export const isAnyDebouncing = atom((get) => {
     ||
     get(lethalHitsAtom.isDebouncingAtom)
     ||
-    get(toWoundAtom.isDebouncingAtom);
+    get(toWoundAtom.isDebouncingAtom)
+    ||
+    get(criticalWoundAtom.isDebouncingAtom)
+    ;
   return isDebouncing;
 })

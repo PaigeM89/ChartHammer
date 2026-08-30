@@ -1,6 +1,7 @@
 import type {
     HitsResult,
-    SimResult
+    SimResult,
+    WoundsResult
 } from './simulationTypes'
 
 interface TableRowProps {
@@ -27,7 +28,7 @@ function NumberCell( { value } : TableNumberCell) {
     )
 }
 
-function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: HitsResult) {
+function HitsCell( { NaturalHits, SustainedHits, AutoWounds, NaturalOnes }: HitsResult) {
     return (
         <div className="grid place-content-center">
             <table className="table-fixed">
@@ -50,7 +51,7 @@ function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: H
                     </tr>
                     <tr>
                         <RowHeader text="Natural Ones" />
-                        <NumberCell value={HitNaturalOnes} />
+                        <NumberCell value={NaturalOnes} />
                     </tr>
                 </tbody>
             </table>
@@ -58,28 +59,31 @@ function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: H
     )
 }
 
-
-interface DataTableProps {
-    simResults : SimResult
+interface WoundsCellProps {
+    woundsResult : WoundsResult
 }
 
-function WoundsCell( { simResults } : DataTableProps) {
+function WoundsCell( { woundsResult } : WoundsCellProps) {
     return (
         <div className="grid place-content-center">
             <table className="table-fixed">
                 <tbody>
                     <tr>
                         <RowHeader text="Regular Wounds" />
-                        <NumberCell value={simResults.RegularWounds} />
+                        <NumberCell value={woundsResult.RegularWounds} />
                     </tr>
                     <tr>
                         <RowHeader text="Devastating Wounds" />
-                        <NumberCell value={simResults.DevastatingWounds} />
+                        <NumberCell value={woundsResult.DevastatingWounds} />
                     </tr>
                 </tbody>
             </table>
         </div>
     )
+}
+
+interface DataTableProps {
+    simResults : SimResult
 }
 
 export function DataTableHorizontal ( { simResults } : DataTableProps) {
@@ -96,23 +100,19 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <NumberCell value={simResults.AttackCount} />
-                        </td>
+                        <NumberCell value={simResults.AttackCount} />
                         <td>
                             <HitsCell 
                                 NaturalHits={simResults.Hits.NaturalHits}
                                 SustainedHits={simResults.Hits.SustainedHits}
                                 AutoWounds={simResults.Hits.AutoWounds}
-                                HitNaturalOnes={simResults.Hits.HitNaturalOnes}
+                                NaturalOnes={simResults.Hits.NaturalOnes}
                             />
                         </td>
                         <td>
-                            <WoundsCell simResults={simResults}></WoundsCell>
+                            <WoundsCell woundsResult={simResults.Wounds} />
                         </td>
-                        <td>
-                            <NumberCell value={simResults.UnsavedWoundCount} />
-                        </td>
+                        <NumberCell value={simResults.UnsavedWounds} />
                     </tr>
                 </tbody>
             </table>
@@ -136,21 +136,9 @@ export function DataTable( { simResults } : DataTableProps ) {
                                 NaturalHits={simResults.Hits.NaturalHits}
                                 SustainedHits={simResults.Hits.SustainedHits}
                                 AutoWounds={simResults.Hits.AutoWounds}
-                                HitNaturalOnes={simResults.Hits.HitNaturalOnes}
+                                NaturalOnes={simResults.Hits.NaturalOnes}
                             />
                         </td>
-                    </tr>
-                    <tr>
-                        <RowHeader text="Devastating Wounds" />
-                        <NumberCell value={simResults.DevastatingWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Regular Wounds" />
-                        <NumberCell value={simResults.RegularWounds} />
-                    </tr>
-                    <tr>
-                        <RowHeader text="Unsaved Wounds" />
-                        <NumberCell value={simResults.UnsavedWoundCount} />
                     </tr>
                     <tr>
                         <RowHeader text="Mortal Wounds" />

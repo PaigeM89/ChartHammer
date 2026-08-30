@@ -22,7 +22,7 @@ module Simulation =
         |> Damage.simulateDamage input
 
 
-    type AggregateHitResult =
+    type AggregateHitsResult =
         {
             /// Hits from roll results, not from any additional rules.
             NaturalHits : float
@@ -55,12 +55,40 @@ module Simulation =
                 HitNaturalOnes = this.HitNaturalOnes / runCount
             }
 
+    type AggregateWoundsResult =
+        {
+            DevastatingWounds : float
+            RegularWounds : float
+        } with
+            static member Empty() = {
+                DevastatingWounds = 0.0
+                RegularWounds = 0.0
+            }
+
+            member this.AddWoundsResult (wr : WoundsResult) = 
+                match wr with
+                | RegularWounds x ->
+                    { this with RegularWounds = this.RegularWounds + float x }
+                | DevastatingWounds (d, r) ->
+                    { this with
+                        DevastatingWounds = this.DevastatingWounds + float d
+                        RegularWounds = this.RegularWounds + float r
+                    }
+
+            member this.Normalize runCount =
+                { this with
+                    DevastatingWounds = this.DevastatingWounds / runCount
+                    RegularWounds = this.RegularWounds / runCount
+                }        
+        
     type AggregateSimResult =
         {
             AttackCount : float
-            Hits : AggregateHitResult
-            DevastatingWounds :float
-            RegularWounds : float
+            Hits : AggregateHitsResult
+            Wounds : AggregateWoundsResult
+            // DevastatingWounds :float
+            // CriticalWounds : float
+            // RegularWounds : float
             UnsavedWoundCount : float
             DamageTotal : float
             MortalWounds : float
@@ -69,9 +97,11 @@ module Simulation =
     with
         static member Default() = {
             AttackCount = 0.0
-            Hits = AggregateHitResult.Default()
-            DevastatingWounds = 0.0
-            RegularWounds = 0.0
+            Hits = AggregateHitsResult.Default()
+            Wounds = AggregateWoundsResult.Empty()
+            // DevastatingWounds = 0.0
+            // CriticalWounds = 0.0
+            // RegularWounds = 0.0
             UnsavedWoundCount = 0.0
             DamageTotal = 0.0
             MortalWounds = 0.0
@@ -82,8 +112,10 @@ module Simulation =
             { this with
                 AttackCount = this.AttackCount + float simResult.AttackCount
                 Hits = this.Hits.AddHitsResult simResult.Hits
-                DevastatingWounds = this.DevastatingWounds + float simResult.DevastatingWounds
-                RegularWounds = this.RegularWounds + float simResult.RegularWounds
+                Wounds = this.Wounds.AddWoundsResult simResult.Wounds
+                // DevastatingWounds = this.DevastatingWounds + float simResult.DevastatingWounds
+                // CriticalWounds = this.CriticalWounds + float simResult.CriticalWounds
+                // RegularWounds = this.RegularWounds + float simResult.RegularWounds
                 UnsavedWoundCount = this.UnsavedWoundCount + float simResult.UnsavedWoundCount
                 DamageTotal = this.DamageTotal + float simResult.DamageTotal
                 MortalWounds = this.MortalWounds + float simResult.MortalWounds
@@ -94,8 +126,10 @@ module Simulation =
             { this with 
                 AttackCount = this.AttackCount / runCount
                 Hits = this.Hits.Normalize runCount
-                DevastatingWounds = this.DevastatingWounds / runCount
-                RegularWounds = this.RegularWounds / runCount
+                Wounds = this.Wounds.Normalize runCount
+                // DevastatingWounds = this.DevastatingWounds / runCount
+                // CriticalWounds = this.CriticalWounds / runCount
+                // RegularWounds = this.RegularWounds / runCount
                 UnsavedWoundCount = this.UnsavedWoundCount / runCount
                 DamageTotal = this.DamageTotal / runCount
                 MortalWounds = this.MortalWounds / runCount

@@ -1,7 +1,7 @@
 namespace ChartHammer
 
 module Types =
-    
+
     type AttacksInput =
     | StaticValue of int
     | DiceRoll of diceSides : int * diceCount : int * staticModifier : int
@@ -36,6 +36,7 @@ module Types =
         ToHit: int
         HitModifiers : HitModifier list
         ToWound: int
+        CriticalWound: int
         WoundModifiers : WoundModifier list
         ToSave: int
         DamagePerHit: int
@@ -63,12 +64,20 @@ module Types =
         member this.TotalHits = this.NaturalHits + this.SustainedHits
         member this.RollableHits = this.NaturalHits - this.AutoWounds + this.SustainedHits
 
+    type WoundsResult =
+    | RegularWounds of int
+    | DevastatingWounds of skipAllSaves : int * regularWounds : int
+
     type SimulationResult = {
         AttackCount : int
         Hits : HitsResult
 
+        Wounds: WoundsResult
+
         DevastatingWounds : int
         RegularWounds : int
+        // Of the amount of regular wounds, this many wounds were critical (auto successes and may trigger other rules)
+        CriticalWounds : int
 
         UnsavedWoundCount : int
         DamageTotal: int
@@ -79,8 +88,10 @@ module Types =
         static member Empty() = {
             AttackCount = 0
             Hits = HitsResult.Empty()
+            Wounds = WoundsResult.RegularWounds 0
             DevastatingWounds = 0
             RegularWounds = 0
+            CriticalWounds = 0
             UnsavedWoundCount = 0
             DamageTotal = 0
             MortalWounds = 0
@@ -90,4 +101,7 @@ module Types =
     module SimResult =
         let getRollableHitCount simResult = simResult.Hits.RollableHits
         
-        let getTotalSaveRolls simResult = simResult.RegularWounds
+        let getTotalSaveRolls simResult = //simResult.RegularWounds + simResult.CriticalWounds
+            match simResult.Wounds with
+            | WoundsResult.RegularWounds x -> x
+            | WoundsResult.DevastatingWounds(_, x) -> x

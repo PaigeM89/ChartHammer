@@ -10,6 +10,7 @@ module DTOs =
             ToHit: int
             HitModifiers : (string * int) list
             ToWound: int
+            CriticalWound : int
             WoundModifiers : string list
             ToSave: int
             DamagePerHit: int
@@ -17,3 +18,27 @@ module DTOs =
             EnemyModelHitPoints : int
         }
 
+    type HitsResultDto =
+        {
+            NaturalHits : float
+            SustainedHits : float
+            AutoWounds : float
+            NaturalOnes : float
+        }
+
+    type WoundsResultDto =
+        {
+            RegularWounds : float
+            DevastatingWounds : float
+        }
+
+    type SimResultDto =
+        {
+            AttackCount : float
+            Hits : HitsResultDto
+            Wounds : WoundsResultDto
+            UnsavedWounds : float
+            DamageTotal : float
+            MortalWounds : float
+            ModelsDestroyed : float
+        }

@@ -1,4 +1,4 @@
-import { attacksAtom, lethalHitsAtom, toHitAtom, torrentAtom, toWoundAtom } from "./simulationAtoms";
+import { attacksAtom, criticalWoundAtom, lethalHitsAtom, toHitAtom, torrentAtom, toWoundAtom } from "./simulationAtoms";
 import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
@@ -12,10 +12,13 @@ export function SimInput() {
     const setToHit = useSetAtom(toHitAtom.debouncedValueAtom)
     const torrent = useAtomValue(torrentAtom.currentValueAtom)
     const setTorrent = useSetAtom(torrentAtom.debouncedValueAtom)
-    const toWound = useAtomValue(toWoundAtom.currentValueAtom)
-    const setToWound = useSetAtom(toWoundAtom.debouncedValueAtom)
     const lethalHits = useAtomValue(lethalHitsAtom.currentValueAtom)
     const setLethalHits = useSetAtom(lethalHitsAtom.debouncedValueAtom)
+    const toWound = useAtomValue(toWoundAtom.currentValueAtom)
+    const setToWound = useSetAtom(toWoundAtom.debouncedValueAtom)
+    const criticalWound = useAtomValue(criticalWoundAtom.currentValueAtom)
+    const setCriticalWound = useSetAtom(criticalWoundAtom.debouncedValueAtom)
+    
 
     return (
         <div>
@@ -24,6 +27,7 @@ export function SimInput() {
             <NumericInput label="To Hit" value={toHit} onUpdate={(v) => setToHit(v)} disabled={torrent} minValue={2} maxValue={6} />
             <Checkbox label="Lethal Hits" value={lethalHits} onUpdate={(b) => setLethalHits(b)} />
             <NumericInput label="To Wound" value={toWound} onUpdate={(v) => setToWound(v)} minValue={2} maxValue={6} />
+            <NumericInput label="Critical Wound" value={criticalWound} onUpdate={(v) => setCriticalWound(v)} minValue={toWound} maxValue={6} />
         </div>
     )
 }

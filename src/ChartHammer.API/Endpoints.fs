@@ -21,7 +21,7 @@ module Handlers =
                 return ctx.WriteText msg
             | Ok input ->
                 let simResult = ChartHammer.Simulation.simulateNTimes input SIMULATION_COUNT
-                return ctx.WriteJson simResult
+                return ctx.WriteJson (Transforms.transformResultToDto simResult)
         } :> Task
 
 module Endpoints =
