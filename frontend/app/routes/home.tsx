@@ -4,16 +4,15 @@ import { SimulationRoot } from '../simulation/simulation';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "ChartHammer" },
+    { name: "description", content: "Warhammer 40k Attack Calculator" },
   ];
 }
 
 export default function Home() {
   return (
-    <div>
-      <Welcome />
+    <>
       <SimulationRoot />
-    </div>
+    </>
   );
 }

@@ -6,7 +6,7 @@ import type {
     SimRequest,
     SimResult
 } from './simulationTypes'
-import { DataTable } from './resultsTable'
+import { DataTable, DataTableHorizontal } from './resultsTable'
 import { SimResultsBarChart } from './chart';
 import { SimInput } from './simInput';
 import { isAnyDebouncing, simRequestAtom } from "./simulationAtoms";
@@ -45,7 +45,7 @@ function SimulationResults() {
     return (
         <div>
             <SimResultsBarChart simResults={data} isLoading={isDebouncing || isPending} />
-            <DataTable simResults={data} />
+            <DataTableHorizontal simResults={data} />
         </div>
     );
 }
@@ -53,8 +53,11 @@ function SimulationResults() {
 export function SimulationRoot() {
     return (
         <QueryClientProvider client={queryClient}>
-            <SimInput />
-            <SimulationResults />
+            <div className="flex justify-center items-center">
+                <SimInput />
+                <SimulationResults />
+            </div>
         </QueryClientProvider>
     );
-} 
+}
+

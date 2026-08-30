@@ -54,8 +54,66 @@ function HitsCell( { NaturalHits, SustainedHits, AutoWounds, HitNaturalOnes }: H
     )
 }
 
+
 interface DataTableProps {
     simResults : SimResult
+}
+
+function WoundsCell( { simResults } : DataTableProps) {
+    return (
+        <div className="grid place-content-center">
+            <table className="table-fixed">
+                <tbody>
+                    <tr>
+                        <RowHeader text="Regular Wounds" />
+                        <NumberCell value={simResults.RegularWounds} />
+                    </tr>
+                    <tr>
+                        <RowHeader text="Devastating Wounds" />
+                        <NumberCell value={simResults.DevastatingWounds} />
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+export function DataTableHorizontal ( { simResults } : DataTableProps) {
+    return (
+        <div className="grid place-content-center">
+            <table className="table-fixed">
+                <thead>
+                    <tr>
+                        <th scope='col'>Attacks</th>
+                        <th scope='col'>Hits</th>
+                        <th scope='col'>Wounds</th>
+                        <th scope='col'>Unsaved Wounds</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <NumberCell value={simResults.AttackCount} />
+                        </td>
+                        <td>
+                            <HitsCell 
+                                NaturalHits={simResults.Hits.NaturalHits}
+                                SustainedHits={simResults.Hits.SustainedHits}
+                                AutoWounds={simResults.Hits.AutoWounds}
+                                HitNaturalOnes={simResults.Hits.HitNaturalOnes}
+                            />
+                        </td>
+                        <td>
+                            <WoundsCell simResults={simResults}></WoundsCell>
+                        </td>
+                        <td>
+                            <NumberCell value={simResults.UnsavedWoundCount} />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export function DataTable( { simResults } : DataTableProps ) {
