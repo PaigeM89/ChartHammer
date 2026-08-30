@@ -82,7 +82,7 @@ export const woundsRerollFailures = atomWithDebounce(false)
 export const devastatingWoundsEnabled = atomWithDebounce(false)
 export const precisionHitsEnabled = atomWithDebounce(false)
 export const criticalWoundAtom = atomWithDebounce(6)
-
+export const armorSaveAtom = atomWithDebounce(4)
 export const damageAtom = atomWithDebounce("1")
 
 export const hitsModifierAtom = atom((get) => {
@@ -124,6 +124,7 @@ export const simRequestAtom = atom((get) => {
       HitModifiers: get(hitsModifierAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
       WoundModifiers: get(woundModifiersAtom),
+      ToSave: get(armorSaveAtom.debouncedValueAtom),
       Damage: get(damageAtom.debouncedValueAtom)
     }
 

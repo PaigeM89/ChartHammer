@@ -1,4 +1,4 @@
-import { attacksAtom, criticalHitAtom, criticalWoundAtom, damageAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom, woundsRerollFailures, woundsRerollOnes } from "./simulationAtoms";
+import { armorSaveAtom, attacksAtom, criticalHitAtom, criticalWoundAtom, damageAtom, devastatingWoundsEnabled, hitsRerollFailures, hitsRerollOnes, lethalHitsAtom, sustainedHitsAtom, toHitAtom, torrentAtom, toWoundAtom, woundsRerollFailures, woundsRerollOnes } from "./simulationAtoms";
 import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
@@ -63,6 +63,8 @@ function WoundsInput() {
     const setToWound = useSetAtom(toWoundAtom.debouncedValueAtom)
     const criticalWound = useAtomValue(criticalWoundAtom.currentValueAtom)
     const setCriticalWound = useSetAtom(criticalWoundAtom.debouncedValueAtom)
+    const armorSaveValue = useAtomValue(armorSaveAtom.currentValueAtom)
+    const setArmorSave = useSetAtom(armorSaveAtom.debouncedValueAtom)
 
     const rerollOnes = useAtomValue(woundsRerollOnes.currentValueAtom)
     const setRerollOnes = useSetAtom(woundsRerollOnes.debouncedValueAtom)
@@ -81,6 +83,7 @@ function WoundsInput() {
             <NumericInput label="Critical Wound" value={criticalWound} onUpdate={(v) => setCriticalWound(v)} minValue={toWound} maxValue={6} disabled={!devWoundsEnabled} />
             <Checkbox label="Reroll Ones" disabled={rerollFailures} value={rerollOnes} onUpdate={(b) => setRerollOnes(b)} />
             <Checkbox label="Reroll Failures" disabled={rerollOnes} value={rerollFailures} onUpdate={(b) => setRerollFailures(b)} />
+            <NumericInput label="Armor Save" value={armorSaveValue} onUpdate={(v) => setArmorSave(v)} />
         </div>
     )
 }
@@ -104,11 +107,15 @@ function DamageInput() {
 
 export function SimInput() {
     return (
-        <div>
-            <AttacksInput />
-            <HitsInput />
-            <WoundsInput />
-            <DamageInput />
+        <div className="flex">
+            <div>
+                <AttacksInput />
+                <HitsInput />
+            </div>
+            <div>
+                <WoundsInput />
+                <DamageInput />
+            </div>
         </div>
     )
 }
