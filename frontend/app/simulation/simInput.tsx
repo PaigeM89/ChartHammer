@@ -4,7 +4,6 @@ import { useSetAtom } from "jotai";
 import { StringInput } from "../components/StringInput";
 import { Checkbox } from "../components/Checkbox";
 import { NumericInput } from "../components/NumericInput";
-import { useState } from "react";
 
 function WoundsInput() {
     const devWoundsEnabled = useAtomValue(devastatingWoundsEnabled.currentValueAtom)
