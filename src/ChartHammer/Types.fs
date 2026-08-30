@@ -84,7 +84,7 @@ module Types =
 
         UnsavedWoundCount : int
         DamageTotal: int
-        /// treated as a subset of "damage total"
+        /// Separate value from Damage Total
         MortalWounds : int
         ModelsDestroyed : int
     } with

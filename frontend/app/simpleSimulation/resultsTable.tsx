@@ -86,6 +86,25 @@ interface DataTableProps {
     simResults : SimResult
 }
 
+function DamageCell( { simResults } : DataTableProps) {
+    return (
+        <div className="grid place-content-center">
+            <table className="table-fixed">
+                <tbody>
+                    <tr>
+                        <RowHeader text="Normal Damage" />
+                        <NumberCell value={simResults.DamageTotal} />
+                    </tr>
+                    <tr>
+                        <RowHeader text="Mortal Wounds" />
+                        <NumberCell value={simResults.MortalWounds} />
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
 export function DataTableHorizontal ( { simResults } : DataTableProps) {
     return (
         <div className="grid place-content-center">
@@ -114,7 +133,9 @@ export function DataTableHorizontal ( { simResults } : DataTableProps) {
                             <WoundsCell woundsResult={simResults.Wounds} />
                         </td>
                         <NumberCell value={simResults.UnsavedWounds} />
-                        <NumberCell value={simResults.DamageTotal} />
+                        <td>
+                            <DamageCell simResults={simResults} />
+                        </td>
                     </tr>
                 </tbody>
             </table>
