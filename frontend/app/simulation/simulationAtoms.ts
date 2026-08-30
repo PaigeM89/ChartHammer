@@ -70,20 +70,37 @@ function atomWithDebounce<T>(
 export const attacksAtom = atomWithDebounce("10")
 export const torrentAtom = atomWithDebounce(false)
 export const toHitAtom = atomWithDebounce(4)
+export const lethalHitsAtom = atomWithDebounce(false)
 export const toWoundAtom = atomWithDebounce(4)
 
 
 export const simRequestAtom = atom((get) => {
-    const toHit = get(toHitAtom.debouncedValueAtom)
     let request = { 
       ...defaultSimRequest,
       Attacks: get(attacksAtom.debouncedValueAtom), 
-      ToHit: toHit,
+      ToHit: get(toHitAtom.debouncedValueAtom),
       ToWound: get(toWoundAtom.debouncedValueAtom),
     }
 
     if(get(torrentAtom.debouncedValueAtom))
         request = { ...request, HitModifiers: [ ["Torrent", 0] ]}
     
+    if(get(lethalHitsAtom.debouncedValueAtom))
+        request = { ...request, HitModifiers: [...request.HitModifiers, ["LethalHits", 0 ] ] }
+
     return request;
+})
+
+export const isAnyDebouncing = atom((get) => {
+  const isDebouncing =
+    get(attacksAtom.isDebouncingAtom)
+    ||
+    get(torrentAtom.isDebouncingAtom)
+    ||
+    get(toHitAtom.isDebouncingAtom)
+    ||
+    get(lethalHitsAtom.isDebouncingAtom)
+    ||
+    get(toWoundAtom.isDebouncingAtom);
+  return isDebouncing;
 })

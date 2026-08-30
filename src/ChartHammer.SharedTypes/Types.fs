@@ -10,10 +10,13 @@ module Types =
     // auto-hit, skip the whole step
     | Torrent
     // -1 to hit
+    // do i need this?
     | TargetInStealth
     | LethalHits
+    // do i need this?
     | Heavy
     | SustainedHits of int
+    // do i need this?
     | Hazardous
     | RerollOnes
     | RerollFailures

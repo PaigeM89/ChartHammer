@@ -1,3 +1,4 @@
+import { Loader } from 'lucide-react';
 import type {
     HitsResult,
     SimResult
@@ -16,7 +17,8 @@ import {
 } from 'recharts';
 
 interface ChartProps {
-    simResults : SimResult
+    simResults : SimResult;
+    isLoading? : boolean
 }
 
 function totalHits(hitResults : HitsResult) {
@@ -39,8 +41,7 @@ function transformSimResults(simResults : SimResult) {
     return data;
 }
 
-export function SimResultsBarChart( { simResults } : ChartProps) 
-{
+function Chart( { simResults } : ChartProps) {
     const data = transformSimResults(simResults);
     return (
         <div className="flex justify-center items-center w-full">
@@ -62,4 +63,29 @@ export function SimResultsBarChart( { simResults } : ChartProps)
             </BarChart>
         </div>
     );
+}
+
+export function SimResultsBarChart( { simResults, isLoading=false } : ChartProps) 
+{
+    return (
+        //<div style={{ position: 'relative', width: '100%', height: 300 }}>
+        <div>
+            {/* Absolute overlay containing the icon */}
+            {isLoading && (
+                <div style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, bottom: 0,
+                //backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                display: 'flex', justifyContent: 'center', alignItems: 'center',
+                zIndex: 10
+                }}>
+                <svg className="animate-spin" width="38" height="38" viewBox="0 0 38 38">
+                    <Loader />
+                </svg>
+                </div>
+            )}
+
+            <Chart simResults={simResults} />
+        </div>
+    )
 }

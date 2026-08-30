@@ -9,7 +9,7 @@ import type {
 import { DataTable } from './resultsTable'
 import { SimResultsBarChart } from './chart';
 import { SimInput } from './simInput';
-import { simRequestAtom } from "./simulationAtoms";
+import { isAnyDebouncing, simRequestAtom } from "./simulationAtoms";
 import { useAtomValue } from 'jotai';
 import { atomWithQuery } from 'jotai-tanstack-query';
 
@@ -37,13 +37,14 @@ const simRequestQueryAtom = atomWithQuery((get) => ({
     }))
 
 function SimulationResults() {
+    const isDebouncing = useAtomValue(isAnyDebouncing)
     const { data, isPending, isError } = useAtomValue(simRequestQueryAtom)
     if (isPending) return 'Loading...'
     if (isError) return 'An error has occurred'
     if (!data) return 'Failed to parse response'
     return (
         <div>
-            <SimResultsBarChart simResults={data} />
+            <SimResultsBarChart simResults={data} isLoading={isDebouncing || isPending} />
             <DataTable simResults={data} />
         </div>
     );
