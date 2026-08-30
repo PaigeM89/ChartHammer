@@ -66,6 +66,8 @@ module Transforms =
             AttacksVariance = variance.AttackVariance
             HitsVariance = variance.HitVariance
             WoundsVariance = variance.WoundVariance
+            UnsavedWoundsVariance = variance.UnsavedWoundVariance
+            DamageVariance = variance.DamageVariance
         }
 
     let transformResultToDto (simResult : AggregateSimResult) =

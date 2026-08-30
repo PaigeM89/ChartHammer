@@ -77,6 +77,8 @@ export interface Variance {
     AttacksVariance : number;
     HitsVariance : number;
     WoundsVariance : number;
+    UnsavedWoundsVariance : number;
+    DamageVariance : number;
 }
 
 export interface SimResult {

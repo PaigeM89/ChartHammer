@@ -85,14 +85,14 @@ module Simulation =
         AttackVariance : double
         HitVariance : double
         WoundVariance : double
-        SaveVariance : double
+        UnsavedWoundVariance : double
         DamageVariance : double
     } with
         static member Empty() = {
             AttackVariance = 0.0
             HitVariance = 0.0
             WoundVariance = 0.0
-            SaveVariance = 0.0
+            UnsavedWoundVariance = 0.0
             DamageVariance = 0.0
         }
 
@@ -172,11 +172,21 @@ module Simulation =
                     | DevastatingWounds (d, x) -> (float (d + x) - foldedResult.Wounds.DevastatingWounds - foldedResult.Wounds.RegularWounds) ** 2.0
                 )
             s / count
+        let unsavedWoundVariance =
+            let s =
+                results |> Seq.sumBy (fun sr -> (float sr.UnsavedWoundCount - foldedResult.UnsavedWoundCount) ** 2.0)
+            s / count
+        let damageVariance =
+            let s =
+                results |> Seq.sumBy (fun sr -> (float sr.DamageTotal - foldedResult.DamageTotal) ** 2.0)
+            s / count
         let variance = 
             { Variance.Empty() with
                 AttackVariance = attacksVariance
                 HitVariance = hitsVariance
                 WoundVariance = woundVariance
+                UnsavedWoundVariance = unsavedWoundVariance
+                DamageVariance = damageVariance
             }
         { foldedResult with Variance = variance }
 
