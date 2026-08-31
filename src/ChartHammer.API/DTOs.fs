@@ -44,6 +44,7 @@ module DTOs =
             SustainedHits : float
             AutoWounds : float
             NaturalOnes : float
+            Rerolls : float
         }
 
     type WoundsResultDto =

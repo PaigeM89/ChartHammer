@@ -53,6 +53,7 @@ module Transforms =
             SustainedHits = hits.SustainedHits
             AutoWounds = hits.AutoWounds
             NaturalOnes = hits.HitNaturalOnes
+            Rerolls = hits.Rerolls
         }
 
     let private transformWoundsResultToDto (wounds : AggregateWoundsResult) =

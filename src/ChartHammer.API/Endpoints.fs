@@ -12,7 +12,6 @@ module Handlers =
     let runSimulation (ctx : HttpContext) =
         task {
             let! simInput = ctx.BindJson<SimulationInputDto>()
-            printfn "%A" simInput
 
             let input = Transforms.transformDtoToDomain simInput
 

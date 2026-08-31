@@ -66,6 +66,7 @@ export interface HitsResult {
     SustainedHits: number;
     AutoWounds: number;
     NaturalOnes: number;
+    Rerolls : number;
 }
 
 export interface WoundsResult {

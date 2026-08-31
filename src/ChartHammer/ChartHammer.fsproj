@@ -22,9 +22,10 @@
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
     <Compile Include="Types.fs" />
-    <Compile Include="Helpers.fs" />
+    
     <Compile Include="DiceParser.fs" />
     <Compile Include="Generator.fs" />
+    <Compile Include="Helpers.fs" />
     <Compile Include="HitRolls.fs" />
     <Compile Include="WoundRolls.fs" />
     <Compile Include="SaveRolls.fs" />

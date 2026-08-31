@@ -1,6 +1,5 @@
 namespace ChartHammer
 
-open System
 
 module Generator =
     let random = System.Random()

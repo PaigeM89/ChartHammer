@@ -4,6 +4,11 @@ open ChartHammer.Types
 
 module HitRolls =
     
+    type RerollsResult = {
+        NewRolls : int list
+        RerollCount : int
+    }
+
     let private getSustainedHits input rolls  =
         if input.HitModifiers.SustainedHits > 0
         then
@@ -24,13 +29,23 @@ module HitRolls =
         then
             let successes, failures = rolls |> List.splitBy (fun x -> x >= input.ToHit)
             let rerolls = Generator.generate (List.length failures) |> Seq.toList
-            successes @ rerolls
+            { 
+                NewRolls = successes @ rerolls
+                RerollCount = List.length failures
+            }
         else if input.HitModifiers.RerollOnes
         then
             let greaterThanOne, equalToOne = rolls |> List.splitBy (fun x -> x > 1)
             let rerolls = Generator.generate (List.length equalToOne) |> Seq.toList
-            greaterThanOne @ rerolls
-        else rolls
+            { 
+                NewRolls = greaterThanOne @ rerolls
+                RerollCount = List.length equalToOne
+            }
+        else 
+            {
+                NewRolls = rolls
+                RerollCount = 0
+            }
 
 
     let simulateHitRolls input simResult =
@@ -39,13 +54,13 @@ module HitRolls =
             let hitsResult = { HitsResult.Empty() with NaturalHits = simResult.AttackCount }
             { simResult with Hits = hitsResult }
         else
-            let rolls =
+            let rerollsResult =
                 Generator.generate simResult.AttackCount
                 |> Seq.toList
-                |> applyHitRerolls input 
-            let sustainedHitsCount = getSustainedHits input rolls
+                |> Helpers.applyRerolls input.ToHit input.HitModifiers.RerollFailures input.HitModifiers.RerollOnes
+            let sustainedHitsCount = getSustainedHits input rerollsResult.NewRolls
             // filter out the sixes at this point, so we don't double count them when determining successful hits
-            let lethalHitsCount , filteredRolls= getLethalHits input rolls
+            let lethalHitsCount , filteredRolls= getLethalHits input rerollsResult.NewRolls
             let hazardousRollsCount = filteredRolls |> List.filter (fun x -> x = 1) |> List.length
             let hitCount = filteredRolls |> List.filter (fun x -> x <> 1 && x >= input.ToHit) |> List.length
 
@@ -55,6 +70,7 @@ module HitRolls =
                     SustainedHits = sustainedHitsCount
                     AutoWounds = lethalHitsCount
                     HitNaturalOnes = hazardousRollsCount
+                    Rerolls = rerollsResult.RerollCount
                 }
 
             { simResult with Hits = hitsResult }

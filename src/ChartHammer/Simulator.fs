@@ -32,6 +32,7 @@ module Simulation =
             AutoWounds : float
             /// If the attack has Hazardous, this is the count of natural 1s rolled.
             HitNaturalOnes : float
+            Rerolls : float
         }
     with
         static member Default() = {
@@ -39,6 +40,7 @@ module Simulation =
             SustainedHits = 0.0
             AutoWounds = 0.0
             HitNaturalOnes = 0.0
+            Rerolls = 0.0
         }
         member this.AddHitsResult (hitsResult : HitsResult) = 
             { this with
@@ -46,6 +48,7 @@ module Simulation =
                 SustainedHits = this.SustainedHits + float hitsResult.SustainedHits
                 AutoWounds = this.AutoWounds + float hitsResult.AutoWounds
                 HitNaturalOnes = this.HitNaturalOnes + float hitsResult.HitNaturalOnes
+                Rerolls = this.Rerolls + float hitsResult.Rerolls
             }
         member this.Normalize runCount =
             { this with
@@ -53,6 +56,7 @@ module Simulation =
                 SustainedHits = this.SustainedHits / runCount
                 AutoWounds = this.AutoWounds / runCount
                 HitNaturalOnes = this.HitNaturalOnes / runCount
+                Rerolls = this.Rerolls / runCount
             }
 
     type AggregateWoundsResult =

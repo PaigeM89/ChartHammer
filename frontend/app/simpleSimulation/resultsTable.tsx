@@ -74,6 +74,10 @@ function HitsCell( { HitsResult, HitsVariance }: HitsCellProps) {
                         <NumberWithVarianceCell value={HitsResult.NaturalHits + HitsResult.SustainedHits} variance={HitsVariance} />
                     </tr>
                     <tr>
+                        <RowHeader text="Rerolls" />
+                        <NumberCell value={HitsResult.Rerolls} />
+                    </tr>
+                    <tr>
                         <RowHeader text="Natural Ones" />
                         <NumberCell value={HitsResult.NaturalOnes} />
                     </tr>

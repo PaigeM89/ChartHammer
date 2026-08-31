@@ -57,12 +57,15 @@ module Types =
         AutoWounds : int
         /// If the attack has Hazardous, this is the count of natural 1s rolled.
         HitNaturalOnes : int
+        /// If there was any reroll rule applied, this is the number of dice re-rolled.
+        Rerolls : int
     } with
         static member Empty() = {
             NaturalHits = 0
             SustainedHits = 0
             AutoWounds = 0
             HitNaturalOnes = 0
+            Rerolls = 0
         }
         /// The total number of hits.
         member this.TotalHits = this.NaturalHits + this.SustainedHits
