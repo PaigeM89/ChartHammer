@@ -53,7 +53,7 @@ module Types =
         NaturalHits : int
         /// Hits added to the pool from the Sustained Hits rule.
         SustainedHits : int
-        /// Of the hits generated, this many hits skip the step to see if they wound.
+        /// This many hits skip the step to see if they wound.
         AutoWounds : int
         /// If the attack has Hazardous, this is the count of natural 1s rolled.
         HitNaturalOnes : int
@@ -68,12 +68,28 @@ module Types =
             Rerolls = 0
         }
         /// The total number of hits.
-        member this.TotalHits = this.NaturalHits + this.SustainedHits
-        member this.RollableHits = this.NaturalHits - this.AutoWounds + this.SustainedHits
+        member this.TotalHits = this.NaturalHits + this.SustainedHits + this.AutoWounds
+        member this.RollableHits = this.NaturalHits + this.SustainedHits
 
-    type WoundsResult =
-    | RegularWounds of int
-    | DevastatingWounds of skipAllSaves : int * regularWounds : int
+    type WoundsResult = {
+        /// Wounds that allow a save.
+        RegularWounds : int
+        /// Wounds that do not allow a save.
+        AutoDamage : int
+        /// The number of dice rerolled, if any.
+        Rerolls : int
+    } with
+        static member Empty() = {
+            RegularWounds = 0
+            AutoDamage = 0
+            Rerolls = 0
+        }
+
+        member this.TotalWounds = this.RegularWounds + this.AutoDamage
+
+    // type WoundsResult =
+    // | RegularWounds of int
+    // | DevastatingWounds of skipAllSaves : int * regularWounds : int
 
     type SimulationResult = {
         AttackCount : int
@@ -90,7 +106,7 @@ module Types =
         static member Empty() = {
             AttackCount = 0
             Hits = HitsResult.Empty()
-            Wounds = WoundsResult.RegularWounds 0
+            Wounds = WoundsResult.Empty() //WoundsResult.RegularWounds 0
             UnsavedWoundCount = 0
             DamageTotal = 0
             MortalWounds = 0
@@ -101,6 +117,7 @@ module Types =
         let getRollableHitCount simResult = simResult.Hits.RollableHits
         
         let getTotalSaveRolls simResult = //simResult.RegularWounds + simResult.CriticalWounds
-            match simResult.Wounds with
-            | WoundsResult.RegularWounds x -> x
-            | WoundsResult.DevastatingWounds(_, x) -> x
+            simResult.Wounds.RegularWounds
+            // match simResult.Wounds with
+            // | WoundsResult.RegularWounds x -> x
+            // | WoundsResult.DevastatingWounds(_, x) -> x

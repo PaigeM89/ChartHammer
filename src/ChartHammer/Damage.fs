@@ -21,12 +21,12 @@ module Damage =
 
 
     let private setMortalWounds input simResult =
-        match simResult.Wounds with
-        | RegularWounds _ -> simResult
-        | DevastatingWounds (devWounds, _) ->
+        if simResult.Wounds.AutoDamage <= 0
+        then simResult
+        else
             let damageRolls = 
                 seq {
-                    for i in 0..(devWounds - 1) do getSingleDamageRoll input
+                    for i in 0..(simResult.Wounds.AutoDamage - 1) do getSingleDamageRoll input
                 }
             let mortals = Seq.sum damageRolls
             { simResult with MortalWounds = mortals }

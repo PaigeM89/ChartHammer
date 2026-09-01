@@ -103,14 +103,18 @@ function WoundsCell( { woundsResult, woundsVariance } : WoundsCellProps) {
                     </tr>
                     <tr>
                         <RowHeader text="Devastating Wounds" />
-                        <NumberCell value={woundsResult.DevastatingWounds} />
+                        <NumberCell value={woundsResult.AutoDamage} />
                     </tr>
                     <tr>
                         <RowHeader text="Total Wounds" />
                         <NumberWithVarianceCell 
-                            value={woundsResult.DevastatingWounds + woundsResult.RegularWounds}
+                            value={woundsResult.AutoDamage + woundsResult.RegularWounds}
                             variance={woundsVariance}
                         />
+                    </tr>
+                    <tr>
+                        <RowHeader text="Rerolls" />
+                        <NumberCell value={woundsResult.Rerolls} />
                     </tr>
                 </tbody>
             </table>

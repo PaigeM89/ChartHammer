@@ -28,7 +28,7 @@ module Simulation =
             NaturalHits : float
             /// Hits added to the pool from the Sustained Hits rule.
             SustainedHits : float
-            /// Of the hits generated, this many hits skip the step to see if they wound.
+            /// This many hits skip the step to see if they wound.
             AutoWounds : float
             /// If the attack has Hazardous, this is the count of natural 1s rolled.
             HitNaturalOnes : float
@@ -58,32 +58,37 @@ module Simulation =
                 HitNaturalOnes = this.HitNaturalOnes / runCount
                 Rerolls = this.Rerolls / runCount
             }
+        member this.TotalHits = this.NaturalHits + this.SustainedHits + this.AutoWounds
 
-    type AggregateWoundsResult =
-        {
-            DevastatingWounds : float
-            RegularWounds : float
-        } with
-            static member Empty() = {
-                DevastatingWounds = 0.0
-                RegularWounds = 0.0
+
+    type AggregateWoundsResult = {
+        /// Wounds that allow a save.
+        RegularWounds : float
+        /// Wounds that do not allow a save.
+        AutoDamage : float
+        /// The number of dice rerolled, if any.
+        Rerolls : float
+    } with
+        static member Empty() = {
+            RegularWounds = 0.0
+            AutoDamage  = 0.0
+            Rerolls = 0.0
+        }
+
+        member this.AddWoundsResult (wr : WoundsResult) =
+            { this with
+                RegularWounds = this.RegularWounds + float wr.RegularWounds
+                AutoDamage = this.AutoDamage + float wr.AutoDamage
+                Rerolls = this.Rerolls + float wr.Rerolls
             }
 
-            member this.AddWoundsResult (wr : WoundsResult) = 
-                match wr with
-                | RegularWounds x ->
-                    { this with RegularWounds = this.RegularWounds + float x }
-                | DevastatingWounds (d, r) ->
-                    { this with
-                        DevastatingWounds = this.DevastatingWounds + float d
-                        RegularWounds = this.RegularWounds + float r
-                    }
-
-            member this.Normalize runCount =
-                { this with
-                    DevastatingWounds = this.DevastatingWounds / runCount
-                    RegularWounds = this.RegularWounds / runCount
-                }        
+        member this.Normalize count =
+            { this with
+                RegularWounds = this.RegularWounds / count
+                AutoDamage = this.AutoDamage / count
+                Rerolls = this.Rerolls / count
+            }
+        member this.TotalWounds = this.RegularWounds + this.AutoDamage
         
     type Variance = {
         AttackVariance : double
@@ -99,6 +104,15 @@ module Simulation =
             UnsavedWoundVariance = 0.0
             DamageVariance = 0.0
         }
+
+        member this.Normalize count = 
+            { this with
+                AttackVariance = this.AttackVariance / count
+                HitVariance = this.HitVariance / count
+                WoundVariance = this.WoundVariance / count
+                UnsavedWoundVariance = this.UnsavedWoundVariance / count
+                DamageVariance = this.DamageVariance / count
+            }
 
     type AggregateSimResult =
         {
@@ -167,15 +181,7 @@ module Simulation =
                     (float sr.Hits.NaturalHits - foldedResult.Hits.NaturalHits) ** 2.0
                 )
             s / count
-        let woundVariance =
-            let s =
-                results
-                |> Seq.sumBy (fun sr ->
-                    match sr.Wounds with
-                    | RegularWounds x -> (float x - foldedResult.Wounds.RegularWounds) ** 2.0
-                    | DevastatingWounds (d, x) -> (float (d + x) - foldedResult.Wounds.DevastatingWounds - foldedResult.Wounds.RegularWounds) ** 2.0
-                )
-            s / count
+        let woundVariance = 0.0
         let unsavedWoundVariance =
             let s =
                 results |> Seq.sumBy (fun sr -> (float sr.UnsavedWoundCount - foldedResult.UnsavedWoundCount) ** 2.0)
@@ -194,6 +200,21 @@ module Simulation =
             }
         { foldedResult with Variance = variance }
 
+    let private aggregateWithVarianceTwo results count =
+        let foldedResult = foldAndAggregateResults results count
+        let variance = 
+            results
+            |> Seq.fold (fun variance simResult ->
+                { variance with
+                    AttackVariance = variance.AttackVariance + ((float simResult.AttackCount - foldedResult.AttackCount) ** 2.0)
+                    HitVariance = variance.HitVariance + ((float simResult.Hits.TotalHits - foldedResult.Hits.TotalHits) ** 2.0)
+                    WoundVariance = variance.WoundVariance + ((float simResult.Wounds.TotalWounds - foldedResult.Wounds.TotalWounds) ** 2.0)
+                    UnsavedWoundVariance = variance.UnsavedWoundVariance + ((float simResult.UnsavedWoundCount - foldedResult.UnsavedWoundCount) ** 2.0)
+                    DamageVariance = variance.DamageVariance + ((float simResult.DamageTotal - foldedResult.DamageTotal) ** 2.0)
+                }
+            ) (Variance.Empty())
+        { foldedResult with Variance = variance.Normalize count }
+
     let simulateNTimes input count =
         let results =
             seq {
@@ -201,5 +222,5 @@ module Simulation =
                     simulateFullAttack input
             }
         if input.CalculateVariance
-        then aggregateWithVariance results count
+        then aggregateWithVarianceTwo results count
         else foldAndAggregateResults results count

@@ -71,7 +71,8 @@ export interface HitsResult {
 
 export interface WoundsResult {
     RegularWounds: number;
-    DevastatingWounds: number;
+    AutoDamage: number;
+    Rerolls : number;
 }
 
 export interface Variance {

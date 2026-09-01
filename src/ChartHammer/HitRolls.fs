@@ -3,11 +3,6 @@ namespace ChartHammer
 open ChartHammer.Types
 
 module HitRolls =
-    
-    type RerollsResult = {
-        NewRolls : int list
-        RerollCount : int
-    }
 
     let private getSustainedHits input rolls  =
         if input.HitModifiers.SustainedHits > 0
@@ -16,6 +11,7 @@ module HitRolls =
             sixesCount * input.HitModifiers.SustainedHits
         else 0
 
+    /// Partitions the rolls into critical hits (counted as lethal hits) and regular hits
     let private getLethalHits input rolls =
         if input.HitModifiers.LethalHits
         then
@@ -23,30 +19,6 @@ module HitRolls =
             let filteredList = rolls |> List.filter (fun x -> x < input.HitModifiers.CriticalHit)
             criticalHits, filteredList
         else 0, rolls
-
-    let private applyHitRerolls input rolls =
-        if input.HitModifiers.RerollFailures
-        then
-            let successes, failures = rolls |> List.splitBy (fun x -> x >= input.ToHit)
-            let rerolls = Generator.generate (List.length failures) |> Seq.toList
-            { 
-                NewRolls = successes @ rerolls
-                RerollCount = List.length failures
-            }
-        else if input.HitModifiers.RerollOnes
-        then
-            let greaterThanOne, equalToOne = rolls |> List.splitBy (fun x -> x > 1)
-            let rerolls = Generator.generate (List.length equalToOne) |> Seq.toList
-            { 
-                NewRolls = greaterThanOne @ rerolls
-                RerollCount = List.length equalToOne
-            }
-        else 
-            {
-                NewRolls = rolls
-                RerollCount = 0
-            }
-
 
     let simulateHitRolls input simResult =
         if input.HitModifiers.Torrent
@@ -66,7 +38,7 @@ module HitRolls =
 
             let hitsResult = 
                 { HitsResult.Empty() with
-                    NaturalHits = hitCount + lethalHitsCount
+                    NaturalHits = hitCount
                     SustainedHits = sustainedHitsCount
                     AutoWounds = lethalHitsCount
                     HitNaturalOnes = hazardousRollsCount

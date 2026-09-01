@@ -50,7 +50,8 @@ module DTOs =
     type WoundsResultDto =
         {
             RegularWounds : float
-            DevastatingWounds : float
+            AutoDamage : float
+            Rerolls : float
         }
 
     type VarianceDto =

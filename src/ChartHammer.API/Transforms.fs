@@ -59,7 +59,8 @@ module Transforms =
     let private transformWoundsResultToDto (wounds : AggregateWoundsResult) =
         {
             WoundsResultDto.RegularWounds = wounds.RegularWounds
-            WoundsResultDto.DevastatingWounds = wounds.DevastatingWounds
+            WoundsResultDto.AutoDamage = wounds.AutoDamage
+            Rerolls = wounds.Rerolls
         }
 
     let private transformVarianceToDto (variance : Variance) =
